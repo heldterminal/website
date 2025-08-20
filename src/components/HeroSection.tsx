@@ -53,7 +53,25 @@ export const HeroSection = () => {
           </div>
         </ScrollSection>
 
-        {/* Features moved to dedicated story flow component */}
+        <ScrollSection animation="fade" delay={800}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div className="glass-panel p-6 text-center">
+              <Search className="h-8 w-8 text-primary mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-foreground mb-2">Semantic Search</h3>
+              <p className="text-muted-foreground text-sm">Find commands by meaning, not just text</p>
+            </div>
+            <div className="glass-panel p-6 text-center">
+              <Zap className="h-8 w-8 text-primary mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-foreground mb-2">Intelligent Recall</h3>
+              <p className="text-muted-foreground text-sm">AI-powered command history and suggestions</p>
+            </div>
+            <div className="glass-panel p-6 text-center">
+              <Users className="h-8 w-8 text-primary mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-foreground mb-2">Team Knowledge</h3>
+              <p className="text-muted-foreground text-sm">Share runbooks and procedures seamlessly</p>
+            </div>
+          </div>
+        </ScrollSection>
       </div>
     </section>
   );
