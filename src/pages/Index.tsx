@@ -1,6 +1,7 @@
 import { FlowNavigation } from "@/components/FlowNavigation";
-import { MorphingTerminal } from "@/components/MorphingTerminal";
+import { HeroSection } from "@/components/HeroSection";
 import { CognitionSection } from "@/components/CognitionSection";
+import TremSearchPanel from "@/components/TremSearchPanel";
 import { ExperienceSection } from "@/components/ExperienceSection";
 import TerminalBackground from "@/components/TerminalBackground";
 
@@ -10,8 +11,9 @@ const Index = () => {
       <TerminalBackground />
       <FlowNavigation />
       <main>
-        <MorphingTerminal />
+        <HeroSection />
         <CognitionSection />
+        <TremSearchPanel />
         <ExperienceSection />
       </main>
     </div>
