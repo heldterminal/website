@@ -9,17 +9,26 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { User, Settings as SettingsIcon, CreditCard, CheckCircle, Crown } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Settings = () => {
-  const { user, profile, refreshProfile } = useAuth();
+  const { user, profile, refreshProfile, loading } = useAuth();
   const { toast } = useToast();
-  const [loading, setLoading] = useState(false);
+  const [loadingState, setLoadingState] = useState(false);
   const [billingLoading, setBillingLoading] = useState(false);
   const [profileData, setProfileData] = useState({
     full_name: "",
     email: "",
     github_username: ""
   });
+  const navigate = useNavigate();
+
+  // Redirect unauthenticated users to /auth
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/auth", { replace: true });
+    }
+  }, [loading, user, navigate]);
 
   useEffect(() => {
     if (user) {
@@ -57,7 +66,7 @@ const Settings = () => {
   const updateProfile = async () => {
     if (!user) return;
     
-    setLoading(true);
+    setLoadingState(true);
     try {
       const { error } = await supabase
         .from("profiles")
@@ -75,7 +84,6 @@ const Settings = () => {
         description: "Profile updated successfully"
       });
       
-      // Refresh the auth profile
       await refreshProfile();
     } catch (error: any) {
       toast({
@@ -84,7 +92,7 @@ const Settings = () => {
         variant: "destructive"
       });
     } finally {
-      setLoading(false);
+      setLoadingState(false);
     }
   };
 
@@ -147,11 +155,7 @@ const Settings = () => {
   };
 
   if (!user) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <p className="text-muted-foreground">Please sign in to access settings.</p>
-      </div>
-    );
+    return null; // Redirect will handle
   }
 
   return (
@@ -223,8 +227,8 @@ const Settings = () => {
                     />
                   </div>
 
-                  <Button onClick={updateProfile} disabled={loading}>
-                    {loading ? "Updating..." : "Update Profile"}
+                  <Button onClick={updateProfile} disabled={loadingState}>
+                    {loadingState ? "Updating..." : "Update Profile"}
                   </Button>
                 </CardContent>
               </Card>

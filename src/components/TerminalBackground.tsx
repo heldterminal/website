@@ -63,22 +63,8 @@ const TerminalBackground = () => {
         <div>SSH session logging ENABLED</div>
         <div>Shipper loop started (pid 40756), every 120s.</div>
       </div>
-      
-      {/* Animated particles representing data flow */}
-      <div className="absolute inset-0">
-        {[...Array(6)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-primary rounded-full animate-pulse"
-            style={{
-              left: `${20 + i * 15}%`,
-              top: `${30 + i * 10}%`,
-              animationDelay: `${i * 0.5}s`,
-              animationDuration: '3s'
-            }}
-          />
-        ))}
-      </div>
+
+      {/* Particle dots removed intentionally */}
     </div>
   );
 };

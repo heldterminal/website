@@ -6,49 +6,40 @@ import { Link } from "react-router-dom";
 import { ProfileMenu } from "@/components/ui/ProfileMenu";
 
 export const FlowNavigation = () => {
-  const [activeSection, setActiveSection] = useState("hero");
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, profile } = useAuth();
 
   const navItems = [
-    { id: "hero", label: "Home", href: "/" },
     { id: "pricing", label: "Pricing", href: "/pricing" },
-    { id: "team", label: "Our Team", href: "/team" }
+    { id: "team", label: "Our Team", href: "/team" },
   ];
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
-    <nav className={`glass-nav transition-all duration-300 ${isScrolled ? 'backdrop-blur-heavy' : 'backdrop-blur-light'}`}>
+    <nav
+      className={`glass-nav transition-all duration-300 ${
+        isScrolled ? "backdrop-blur-heavy" : "backdrop-blur-light"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          {/* Logo */}
-          <div className="flex items-center">
+        {/* Header Bar */}
+        <div className="relative flex items-center justify-between h-16">
+          {/* Left: Logo + Left Nav */}
+          <div className="flex items-center space-x-8">
             <Link to="/" className="flex items-center space-x-2">
               <Terminal className="h-8 w-8 text-primary" />
               <span className="text-xl font-bold text-foreground">Trem</span>
             </Link>
-          </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              item.href ? (
+            {/* Desktop Nav (Pricing, Our Team) */}
+            <div className="hidden md:flex items-center space-x-6">
+              {navItems.map((item) => (
                 <Link
                   key={item.id}
                   to={item.href}
@@ -56,21 +47,11 @@ export const FlowNavigation = () => {
                 >
                   {item.label}
                 </Link>
-              ) : (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`text-sm font-medium transition-colors hover:text-primary ${
-                    activeSection === item.id ? "text-primary" : "text-foreground/80"
-                  }`}
-                >
-                  {item.label}
-                </button>
-              )
-            ))}
+              ))}
+            </div>
           </div>
 
-          {/* User Authentication */}
+          {/* Right: Auth/Profile */}
           <div className="hidden md:flex items-center space-x-4">
             {user ? (
               <ProfileMenu profile={profile} />
@@ -88,9 +69,13 @@ export const FlowNavigation = () => {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              onClick={() => setIsMobileMenuOpen((o) => !o)}
             >
-              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isMobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </Button>
           </div>
         </div>
@@ -100,31 +85,16 @@ export const FlowNavigation = () => {
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 bg-card/95 backdrop-blur-md border-t border-border">
               {navItems.map((item) => (
-                item.href ? (
-                  <Link
-                    key={item.id}
-                    to={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-3 py-2 text-base font-medium transition-colors hover:text-primary text-foreground/80"
-                  >
-                    {item.label}
-                  </Link>
-                ) : (
-                  <button
-                    key={item.id}
-                    onClick={() => {
-                      scrollToSection(item.id);
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className={`block px-3 py-2 text-base font-medium transition-colors hover:text-primary ${
-                      activeSection === item.id ? "text-primary" : "text-foreground/80"
-                    }`}
-                  >
-                    {item.label}
-                  </button>
-                )
+                <Link
+                  key={item.id}
+                  to={item.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-3 py-2 text-base font-medium transition-colors hover:text-primary text-foreground/80"
+                >
+                  {item.label}
+                </Link>
               ))}
-              
+
               {/* Mobile Auth */}
               <div className="pt-4 border-t border-border">
                 {user ? (

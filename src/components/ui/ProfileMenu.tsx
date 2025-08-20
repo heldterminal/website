@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { User, Settings, CreditCard, LogOut, ChevronDown } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,6 +27,7 @@ export const ProfileMenu = ({ profile }: ProfileMenuProps) => {
   const { user, signOut } = useAuth();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const getInitials = (name?: string) => {
     if (!name) return user?.email?.charAt(0).toUpperCase() || "U";
@@ -41,25 +42,35 @@ export const ProfileMenu = ({ profile }: ProfileMenuProps) => {
   const handleUpgrade = async () => {
     setIsLoading(true);
     try {
+      console.log('Creating checkout session...');
       const { data, error } = await supabase.functions.invoke('create-checkout-session');
       
       if (error) {
+        console.error('Supabase function error:', error);
         toast({
           title: "Error",
-          description: "Failed to create checkout session. Please try again.",
+          description: `Failed to create checkout session: ${error.message}`,
           variant: "destructive",
         });
         return;
       }
 
-      if (data.url) {
+      if (data?.url) {
+        console.log('Opening checkout URL:', data.url);
         window.open(data.url, '_blank');
+      } else {
+        console.error('No URL in response:', data);
+        toast({
+          title: "Error",
+          description: "No checkout URL received. Please try again.",
+          variant: "destructive",
+        });
       }
     } catch (error) {
       console.error('Error creating checkout session:', error);
       toast({
         title: "Error",
-        description: "Something went wrong. Please try again.",
+        description: `Something went wrong: ${error.message || 'Unknown error'}`,
         variant: "destructive",
       });
     } finally {
@@ -70,25 +81,35 @@ export const ProfileMenu = ({ profile }: ProfileMenuProps) => {
   const handleManageBilling = async () => {
     setIsLoading(true);
     try {
+      console.log('Creating billing portal session...');
       const { data, error } = await supabase.functions.invoke('create-portal-session');
       
       if (error) {
+        console.error('Supabase function error:', error);
         toast({
           title: "Error",
-          description: "Failed to access billing portal. Please try again.",
+          description: `Failed to access billing portal: ${error.message}`,
           variant: "destructive",
         });
         return;
       }
 
-      if (data.url) {
+      if (data?.url) {
+        console.log('Opening billing portal URL:', data.url);
         window.open(data.url, '_blank');
+      } else {
+        console.error('No URL in response:', data);
+        toast({
+          title: "Error",
+          description: "No billing portal URL received. Please try again.",
+          variant: "destructive",
+        });
       }
     } catch (error) {
       console.error('Error creating portal session:', error);
       toast({
         title: "Error",
-        description: "Something went wrong. Please try again.",
+        description: `Something went wrong: ${error.message || 'Unknown error'}`,
         variant: "destructive",
       });
     } finally {
@@ -154,7 +175,7 @@ export const ProfileMenu = ({ profile }: ProfileMenuProps) => {
         
         <DropdownMenuSeparator />
         
-        <DropdownMenuItem onClick={signOut}>
+        <DropdownMenuItem onClick={async () => { await signOut(); navigate('/'); }}>
           <LogOut className="mr-2 h-4 w-4" />
           <span>Sign out</span>
         </DropdownMenuItem>
