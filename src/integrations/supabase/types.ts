@@ -61,6 +61,11 @@ export type Database = {
           full_name: string | null
           github_username: string | null
           id: string
+          provider: string | null
+          provider_id: string | null
+          stripe_customer_id: string | null
+          subscription_id: string | null
+          subscription_status: string | null
           updated_at: string
           user_id: string
         }
@@ -71,6 +76,11 @@ export type Database = {
           full_name?: string | null
           github_username?: string | null
           id?: string
+          provider?: string | null
+          provider_id?: string | null
+          stripe_customer_id?: string | null
+          subscription_id?: string | null
+          subscription_status?: string | null
           updated_at?: string
           user_id: string
         }
@@ -81,6 +91,11 @@ export type Database = {
           full_name?: string | null
           github_username?: string | null
           id?: string
+          provider?: string | null
+          provider_id?: string | null
+          stripe_customer_id?: string | null
+          subscription_id?: string | null
+          subscription_status?: string | null
           updated_at?: string
           user_id?: string
         }
