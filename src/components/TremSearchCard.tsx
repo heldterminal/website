@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
+import { motion, MotionValue } from "framer-motion";
 import { Search, Sparkles, ArrowRight, Clock, User, Folder } from "lucide-react";
 
 interface TremSearchCardProps {
-  morphProgress: number;
-  isActive: boolean;
+  morphProgress: number | MotionValue<number>;
+  isActive: boolean | MotionValue<boolean>;
+  layoutId?: string;
 }
 
-export const TremSearchCard = ({ morphProgress, isActive }: TremSearchCardProps) => {
+export const TremSearchCard = ({ morphProgress, isActive, layoutId }: TremSearchCardProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -16,7 +18,8 @@ export const TremSearchCard = ({ morphProgress, isActive }: TremSearchCardProps)
 
   // Auto-type query when active
   useEffect(() => {
-    if (isActive && searchQuery.length < exampleQuery.length) {
+    const currentIsActive = typeof isActive === 'boolean' ? isActive : false;
+    if (currentIsActive && searchQuery.length < exampleQuery.length) {
       const timeoutId = setTimeout(() => {
         setSearchQuery(exampleQuery.slice(0, searchQuery.length + 1));
       }, 80);
@@ -26,41 +29,47 @@ export const TremSearchCard = ({ morphProgress, isActive }: TremSearchCardProps)
 
   // Show results after typing completes
   useEffect(() => {
-    if (isActive && searchQuery === exampleQuery) {
+    const currentIsActive = typeof isActive === 'boolean' ? isActive : false;
+    if (currentIsActive && searchQuery === exampleQuery) {
       const timeoutId = setTimeout(() => setShowResults(true), 800);
       return () => clearTimeout(timeoutId);
     }
   }, [isActive, searchQuery, exampleQuery]);
 
-  const borderRadius = 16 + morphProgress * 12; // 16px -> 28px during morph
-  const iconGlow = morphProgress * 0.6;
-
   return (
-    <div 
-      className="w-full max-w-4xl bg-card/95 backdrop-blur-md border border-border overflow-hidden"
-      style={{ 
-        borderRadius: `${borderRadius}px`,
-        boxShadow: `0 20px 40px -10px hsl(var(--primary) / ${0.2 + morphProgress * 0.3})`,
+    <motion.div 
+      layoutId={layoutId}
+      className="w-full max-w-4xl bg-card/95 backdrop-blur-md border border-border rounded-2xl overflow-hidden"
+      style={{
+        boxShadow: "0 20px 40px -10px hsl(var(--primary) / 0.4)",
       }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-border">
+      <motion.div 
+        layoutId={layoutId ? `${layoutId}-header` : undefined}
+        className="flex items-center justify-between px-6 py-4 border-b border-border"
+      >
         <div className="flex items-center gap-3">
-          <div 
+          <motion.div 
             className="p-2 rounded-lg bg-primary/10 border border-primary/20"
-            style={{
-              boxShadow: `0 0 ${iconGlow * 20}px hsl(var(--primary) / 0.5)`,
+            animate={{
+              boxShadow: "0 0 20px hsl(var(--primary) / 0.5)",
             }}
           >
             <Sparkles 
               className="h-5 w-5 text-primary" 
               style={{
-                filter: `drop-shadow(0 0 ${iconGlow * 8}px hsl(var(--primary)))`,
+                filter: "drop-shadow(0 0 8px hsl(var(--primary)))",
               }}
             />
-          </div>
+          </motion.div>
           <div>
-            <h3 className="font-semibold text-foreground">Trem AI</h3>
+            <motion.h3 
+              layoutId={layoutId ? `${layoutId}-title` : undefined}
+              className="font-semibold text-foreground"
+            >
+              Trem AI
+            </motion.h3>
             <p className="text-xs text-muted-foreground">Intelligent command search</p>
           </div>
         </div>
@@ -72,10 +81,13 @@ export const TremSearchCard = ({ morphProgress, isActive }: TremSearchCardProps)
             Pro
           </span>
         </div>
-      </div>
+      </motion.div>
 
       {/* Search Input */}
-      <div className="p-6">
+      <motion.div 
+        layoutId={layoutId ? `${layoutId}-content` : undefined}
+        className="p-6"
+      >
         <div 
           className={`relative flex items-center gap-3 p-4 bg-background/50 border rounded-xl transition-all duration-300 ${
             focused || isActive ? "border-primary/50 bg-primary/5" : "border-border"
@@ -90,7 +102,7 @@ export const TremSearchCard = ({ morphProgress, isActive }: TremSearchCardProps)
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={placeholderText}
             className="flex-1 bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground"
-            disabled={isActive} // Disable during demo
+            disabled={isActive as boolean} // Disable during demo
           />
           {(searchQuery || isActive) && (
             <div className="flex items-center gap-2">
@@ -101,7 +113,12 @@ export const TremSearchCard = ({ morphProgress, isActive }: TremSearchCardProps)
 
         {/* Results */}
         {showResults && (
-          <div className="mt-6 space-y-4 animate-fade-in">
+          <motion.div 
+            className="mt-6 space-y-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Sparkles className="h-4 w-4" />
               Found 3 relevant commands
@@ -141,9 +158,12 @@ export const TremSearchCard = ({ morphProgress, isActive }: TremSearchCardProps)
                   }
                 }
               ].map((result, index) => (
-                <div 
+                <motion.div 
                   key={index}
                   className="p-4 bg-background/30 border border-border rounded-lg hover:border-primary/30 transition-colors cursor-pointer group"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
@@ -175,12 +195,12 @@ export const TremSearchCard = ({ morphProgress, isActive }: TremSearchCardProps)
                       <ArrowRight className="h-4 w-4 text-muted-foreground" />
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         )}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };

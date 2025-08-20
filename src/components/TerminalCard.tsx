@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
+import { motion, MotionValue } from "framer-motion";
 
 interface TerminalCardProps {
-  morphProgress: number;
+  morphProgress: number | MotionValue<number>;
+  layoutId?: string;
 }
 
-export const TerminalCard = ({ morphProgress }: TerminalCardProps) => {
+export const TerminalCard = ({ morphProgress, layoutId }: TerminalCardProps) => {
   const [typed, setTyped] = useState("");
   const [showCursor, setShowCursor] = useState(true);
 
   const message = `$ find . -name "*.log" -mtime +7 -delete
-$ kubectl get pods --all-namespaces | grep -v Running
+$ kubectl get pods --all-namespaces | grep -v Running  
 $ git log --oneline --author="john@company.com" --since="1 week ago"
 $ docker ps -a --filter "status=exited" --format "table {{.ID}}\\t{{.Image}}"`;
 
@@ -32,31 +34,38 @@ $ docker ps -a --filter "status=exited" --format "table {{.ID}}\\t{{.Image}}"`;
     return () => clearInterval(interval);
   }, []);
 
-  const borderRadius = 16 + morphProgress * 12; // 16px -> 28px during morph
-
   return (
-    <div 
-      className="w-full max-w-4xl bg-card/95 backdrop-blur-md border border-border overflow-hidden"
-      style={{ 
-        borderRadius: `${borderRadius}px`,
-        boxShadow: `0 20px 40px -10px hsl(var(--background) / 0.5)`,
+    <motion.div 
+      layoutId={layoutId}
+      className="w-full max-w-4xl bg-card/95 backdrop-blur-md border border-border rounded-2xl overflow-hidden"
+      style={{
+        boxShadow: "0 20px 40px -10px hsl(var(--background) / 0.5)",
       }}
     >
       {/* Terminal Header */}
-      <div className="flex items-center gap-2 px-4 py-3 bg-muted/30 border-b border-border">
+      <motion.div 
+        layoutId={layoutId ? `${layoutId}-header` : undefined}
+        className="flex items-center gap-2 px-4 py-3 bg-muted/30 border-b border-border"
+      >
         <div className="w-3 h-3 rounded-full bg-red-500/70" />
         <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
         <div className="w-3 h-3 rounded-full bg-green-500/70" />
-        <span className="ml-3 text-sm text-muted-foreground font-mono">
+        <motion.span 
+          layoutId={layoutId ? `${layoutId}-title` : undefined}
+          className="ml-3 text-sm text-muted-foreground font-mono"
+        >
           bash — old-terminal
-        </span>
+        </motion.span>
         <div className="ml-auto text-xs text-muted-foreground">
           ~/workspace
         </div>
-      </div>
+      </motion.div>
 
       {/* Terminal Content */}
-      <div className="p-6 font-mono text-sm leading-relaxed">
+      <motion.div 
+        layoutId={layoutId ? `${layoutId}-content` : undefined}
+        className="p-6 font-mono text-sm leading-relaxed"
+      >
         <div className="space-y-4">
           {/* Command History */}
           <div className="text-muted-foreground/60">
@@ -88,7 +97,7 @@ $ docker ps -a --filter "status=exited" --format "table {{.ID}}\\t{{.Image}}"`;
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };

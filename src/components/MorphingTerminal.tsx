@@ -1,115 +1,185 @@
-import { useEffect, useRef, useState } from "react";
-import { useSmoothProgress } from "@/hooks/useSmoothProgress";
+import { useRef } from "react";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { TerminalCard } from "./TerminalCard";
 import { TremSearchCard } from "./TremSearchCard";
 
-const clamp = (v: number, min: number, max: number) => Math.max(min, Math.min(max, v));
-
 export const MorphingTerminal = () => {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const shouldReduceMotion = useReducedMotion();
 
-  // Enhanced scroll progress tracking
-  useEffect(() => {
-    const onScroll = () => {
-      const wrapper = wrapperRef.current;
-      if (!wrapper) return;
+  // Framer Motion scroll progress with proper offset
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"]
+  });
 
-      const rect = wrapper.getBoundingClientRect();
-      const wrapperHeight = wrapper.offsetHeight;
-      const viewportHeight = window.innerHeight;
-      
-      // Calculate progress across the section (0 = top, 1 = bottom)
-      const progress = clamp(
-        -rect.top / (wrapperHeight - viewportHeight),
-        0,
-        1
-      );
-      
-      setScrollProgress(progress);
-    };
+  // Transform progress to morph phases as specified
+  const terminalProgress = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
+  const morphProgress = useTransform(scrollYProgress, [0.25, 0.75], [0, 1]);
+  const searchProgress = useTransform(scrollYProgress, [0.75, 1], [0, 1]);
 
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
+  // Terminal transforms (0.00-0.25: scale 1→0.92, opacity 1→0.3)
+  const terminalScale = useTransform(scrollYProgress, [0, 0.25], [1, 0.92]);
+  const terminalOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0.3]);
 
-  // Animation phases based on UX spec
-  const terminalPhase = clamp((0.25 - scrollProgress) / 0.25, 0, 1); // 1 -> 0 from 0 to 0.25
-  const morphPhase = clamp((scrollProgress - 0.25) / 0.5, 0, 1); // 0 -> 1 from 0.25 to 0.75
-  const searchPhase = clamp((scrollProgress - 0.75) / 0.25, 0, 1); // 0 -> 1 from 0.75 to 1
+  // Morph transforms (0.25-0.75: translateY -40px→0, blur 2px→0)  
+  const morphY = useTransform(scrollYProgress, [0.25, 0.75], [-40, 0]);
+  const morphBlur = useTransform(scrollYProgress, [0.25, 0.75], [2, 0]);
 
-  // Easing function for smooth transitions
-  const easeInOutCubic = (t: number) => 
-    t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  // Search transforms (0.75-1.00: scale 0.95→1, opacity 0.4→1)
+  const searchScale = useTransform(scrollYProgress, [0.75, 1], [0.95, 1]);
+  const searchOpacity = useTransform(scrollYProgress, [0.4, 1], [0.4, 1]);
 
-  const easedMorphPhase = easeInOutCubic(morphPhase);
+  // Fallback for reduced motion: simple cross-fade
+  if (shouldReduceMotion) {
+    const simpleTerminalOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+    const simpleSearchOpacity = useTransform(scrollYProgress, [0.5, 1], [0, 1]);
 
-  // Terminal transformations
-  const terminalOpacity = Math.max(0.1, 1 - easedMorphPhase * 0.9);
-  const terminalScale = 1 - easedMorphPhase * 0.14; // 1 -> 0.86
-  const terminalTranslateY = -easedMorphPhase * 40; // Move up
-  const terminalBlur = easedMorphPhase * 2;
-
-  // Search transformations  
-  const searchOpacity = easedMorphPhase;
-  const searchScale = 0.9 + easedMorphPhase * 0.1; // 0.9 -> 1
-  const searchTranslateY = (1 - easedMorphPhase) * 60; // Move into place
-  const searchGlow = easedMorphPhase;
+    return (
+      <section 
+        ref={sectionRef}
+        className="relative min-h-[250vh]"
+      >
+        <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
+          <div className="relative w-full max-w-6xl mx-auto px-6">
+            <motion.div
+              style={{ opacity: simpleTerminalOpacity }}
+              className="absolute inset-0 flex items-center justify-center"
+            >
+              <TerminalCard morphProgress={0} />
+            </motion.div>
+            <motion.div
+              style={{ opacity: simpleSearchOpacity }}
+              className="absolute inset-0 flex items-center justify-center"
+            >
+              <TremSearchCard morphProgress={1} isActive={true} />
+            </motion.div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section 
-      ref={wrapperRef}
-      className="relative"
-      style={{ height: "300vh" }} // Long scroll section
+      ref={sectionRef}
+      className="relative min-h-[250vh]"
     >
-      {/* Sticky container */}
+      {/* Sticky container - no transforms on this node for Safari compatibility */}
       <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
         <div className="relative w-full max-w-6xl mx-auto px-6">
           
-          {/* Terminal Card */}
-          <div
-            className="absolute inset-0 flex items-center justify-center"
+          {/* Terminal Card (0.00-0.25) */}
+          <motion.div
             style={{
+              scale: terminalScale,
               opacity: terminalOpacity,
-              transform: `scale(${terminalScale}) translateY(${terminalTranslateY}px)`,
-              filter: `blur(${terminalBlur}px)`,
-              zIndex: scrollProgress < 0.5 ? 20 : 10,
-              transition: "none",
             }}
-          >
-            <TerminalCard morphProgress={morphPhase} />
-          </div>
-
-          {/* Search Card */}
-          <div
             className="absolute inset-0 flex items-center justify-center"
+          >
+            <TerminalCard 
+              layoutId="morph-container"
+              morphProgress={morphProgress} 
+            />
+          </motion.div>
+
+          {/* Morphing overlay (0.25-0.75) - keeps DOM mounted */}
+          <motion.div
             style={{
-              opacity: searchOpacity,
-              transform: `scale(${searchScale}) translateY(${searchTranslateY}px)`,
-              filter: `drop-shadow(0 0 ${searchGlow * 20}px hsl(var(--primary) / 0.3))`,
-              zIndex: scrollProgress >= 0.5 ? 20 : 10,
-              transition: "none",
+              y: morphY,
+              filter: `blur(${morphBlur}px)`,
+              opacity: useTransform(scrollYProgress, [0.2, 0.3, 0.7, 0.8], [0, 1, 1, 0])
             }}
+            className="absolute inset-0 flex items-center justify-center"
+          >
+            <div className="w-full max-w-4xl">
+              {/* Shared morph container with layoutId */}
+              <motion.div 
+                layoutId="morph-container"
+                className="bg-card/95 backdrop-blur-md border border-border rounded-2xl overflow-hidden"
+                style={{
+                  boxShadow: "0 20px 40px -10px hsl(var(--primary) / 0.3)",
+                }}
+              >
+                {/* Shared header with layoutId */}
+                <motion.div 
+                  layoutId="morph-header"  
+                  className="flex items-center gap-2 px-4 py-3 bg-muted/30 border-b border-border"
+                >
+                  <div className="w-3 h-3 rounded-full bg-red-500/70" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
+                  <div className="w-3 h-3 rounded-full bg-green-500/70" />
+                  <motion.span 
+                    layoutId="morph-title"
+                    className="ml-3 text-sm text-muted-foreground font-mono"
+                  >
+                    {useTransform(morphProgress, (p) => 
+                      p < 0.5 ? "bash — old-terminal" : "Trem AI — intelligent search"
+                    )}
+                  </motion.span>
+                </motion.div>
+
+                {/* Shared input area with layoutId */}
+                <motion.div 
+                  layoutId="morph-input"
+                  className="p-6"
+                >
+                  <div className="font-mono text-sm relative">
+                    <motion.span 
+                      style={{
+                        opacity: useTransform(morphProgress, (p) => p < 0.5 ? 1 : 0)
+                      }}
+                      className="block"
+                    >
+                      $ find . -name "*.log" | xargs grep "error"
+                    </motion.span>
+                    <motion.div
+                      style={{
+                        opacity: useTransform(morphProgress, (p) => p >= 0.5 ? 1 : 0)
+                      }}
+                      className="absolute inset-0"
+                    >
+                      <div className="flex items-center gap-3 p-4 bg-background/50 border border-primary/50 rounded-xl">
+                        <span className="text-primary">🔍</span>
+                        <span className="text-foreground">Search commands by intent...</span>
+                      </div>
+                    </motion.div>
+                  </div>
+                </motion.div>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          {/* Search Card (0.75-1.00) */}
+          <motion.div
+            style={{
+              scale: searchScale,
+              opacity: searchOpacity,
+            }}
+            className="absolute inset-0 flex items-center justify-center"
           >
             <TremSearchCard 
-              morphProgress={morphPhase} 
-              isActive={scrollProgress > 0.75}
+              layoutId="morph-container"
+              morphProgress={searchProgress}
+              isActive={useTransform(scrollYProgress, (p) => p > 0.8)}
             />
-          </div>
+          </motion.div>
 
-          {/* Progress indicator (debug) */}
+          {/* Debug progress indicator */}
           {process.env.NODE_ENV === "development" && (
-            <div className="fixed top-4 right-4 bg-black/50 text-white p-2 rounded text-sm font-mono z-50">
-              Progress: {(scrollProgress * 100).toFixed(1)}%
-              <br />
-              Phase: {scrollProgress < 0.25 ? "Terminal" : scrollProgress < 0.75 ? "Morphing" : "Search"}
-            </div>
+            <motion.div 
+              className="fixed top-4 right-4 bg-black/80 text-white p-3 rounded-lg font-mono text-xs z-50"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              <div>Progress: {Math.round(scrollYProgress.get() * 100)}%</div>
+              <div>
+                Phase: {
+                  scrollYProgress.get() < 0.25 ? "Terminal" :
+                  scrollYProgress.get() < 0.75 ? "Morphing" : "Search"
+                }
+              </div>
+            </motion.div>
           )}
         </div>
       </div>
