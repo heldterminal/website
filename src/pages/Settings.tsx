@@ -8,13 +8,14 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { User, Settings as SettingsIcon, CreditCard } from "lucide-react";
+import { User, Settings as SettingsIcon, CreditCard, CheckCircle, Crown } from "lucide-react";
 
 const Settings = () => {
-  const { user } = useAuth();
+  const { user, profile, refreshProfile } = useAuth();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-  const [profile, setProfile] = useState({
+  const [billingLoading, setBillingLoading] = useState(false);
+  const [profileData, setProfileData] = useState({
     full_name: "",
     email: "",
     github_username: ""
@@ -37,13 +38,13 @@ const Settings = () => {
       if (error && error.code !== "PGRST116") {
         console.error("Error fetching profile:", error);
       } else if (data) {
-        setProfile({
+        setProfileData({
           full_name: data.full_name || "",
           email: data.email || user?.email || "",
           github_username: data.github_username || ""
         });
       } else {
-        setProfile(prev => ({
+        setProfileData(prev => ({
           ...prev,
           email: user?.email || ""
         }));
@@ -62,9 +63,9 @@ const Settings = () => {
         .from("profiles")
         .upsert({
           user_id: user.id,
-          full_name: profile.full_name,
-          email: profile.email,
-          github_username: profile.github_username
+          full_name: profileData.full_name,
+          email: profileData.email,
+          github_username: profileData.github_username
         });
 
       if (error) throw error;
@@ -73,6 +74,9 @@ const Settings = () => {
         title: "Success",
         description: "Profile updated successfully"
       });
+      
+      // Refresh the auth profile
+      await refreshProfile();
     } catch (error: any) {
       toast({
         title: "Error",
@@ -81,6 +85,64 @@ const Settings = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleUpgrade = async () => {
+    setBillingLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('create-checkout-session');
+      
+      if (error) {
+        toast({
+          title: "Error",
+          description: "Failed to create checkout session. Please try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (data.url) {
+        window.open(data.url, '_blank');
+      }
+    } catch (error) {
+      console.error('Error creating checkout session:', error);
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setBillingLoading(false);
+    }
+  };
+
+  const handleManageBilling = async () => {
+    setBillingLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('create-portal-session');
+      
+      if (error) {
+        toast({
+          title: "Error",
+          description: "Failed to access billing portal. Please try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (data.url) {
+        window.open(data.url, '_blank');
+      }
+    } catch (error) {
+      console.error('Error creating portal session:', error);
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setBillingLoading(false);
     }
   };
 
@@ -133,8 +195,8 @@ const Settings = () => {
                       <Label htmlFor="full_name" className="text-foreground">Full Name</Label>
                       <Input
                         id="full_name"
-                        value={profile.full_name}
-                        onChange={(e) => setProfile(prev => ({ ...prev, full_name: e.target.value }))}
+                        value={profileData.full_name}
+                        onChange={(e) => setProfileData(prev => ({ ...prev, full_name: e.target.value }))}
                         className="bg-background/50 border-border"
                       />
                     </div>
@@ -143,8 +205,8 @@ const Settings = () => {
                       <Input
                         id="email"
                         type="email"
-                        value={profile.email}
-                        onChange={(e) => setProfile(prev => ({ ...prev, email: e.target.value }))}
+                        value={profileData.email}
+                        onChange={(e) => setProfileData(prev => ({ ...prev, email: e.target.value }))}
                         className="bg-background/50 border-border"
                       />
                     </div>
@@ -154,8 +216,8 @@ const Settings = () => {
                     <Label htmlFor="github_username" className="text-foreground">GitHub Username</Label>
                     <Input
                       id="github_username"
-                      value={profile.github_username}
-                      onChange={(e) => setProfile(prev => ({ ...prev, github_username: e.target.value }))}
+                      value={profileData.github_username}
+                      onChange={(e) => setProfileData(prev => ({ ...prev, github_username: e.target.value }))}
                       placeholder="Optional"
                       className="bg-background/50 border-border"
                     />
@@ -179,16 +241,47 @@ const Settings = () => {
                 <CardContent>
                   <div className="space-y-6">
                     <div className="p-4 border border-border rounded-lg bg-background/30">
-                      <h3 className="font-semibold text-foreground mb-2">Current Plan</h3>
-                      <p className="text-primary font-medium">Free Tier</p>
-                      <p className="text-sm text-muted-foreground">5,000 tokens per month</p>
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-semibold text-foreground">Current Plan</h3>
+                        {profile?.plan === 'pro' && (
+                          <Crown className="h-5 w-5 text-primary" />
+                        )}
+                      </div>
+                      <p className="text-primary font-medium capitalize">
+                        {profile?.plan || 'free'} Plan
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {profile?.plan === 'pro' 
+                          ? 'Unlimited tokens and premium features' 
+                          : '5,000 tokens per month'
+                        }
+                      </p>
+                      {profile?.subscription_status && profile.subscription_status !== 'active' && (
+                        <p className="text-sm text-destructive mt-1">
+                          Status: {profile.subscription_status}
+                        </p>
+                      )}
                     </div>
                     
                     <div className="space-y-3">
-                      <Button className="w-full md:w-auto">Upgrade to Pro</Button>
-                      <Button variant="outline" className="w-full md:w-auto ml-0 md:ml-3">
-                        View Usage
-                      </Button>
+                      {profile?.plan === 'free' ? (
+                        <Button 
+                          className="w-full md:w-auto" 
+                          onClick={handleUpgrade}
+                          disabled={billingLoading}
+                        >
+                          {billingLoading ? "Loading..." : "Upgrade to Pro"}
+                        </Button>
+                      ) : (
+                        <Button 
+                          variant="outline" 
+                          className="w-full md:w-auto"
+                          onClick={handleManageBilling}
+                          disabled={billingLoading}
+                        >
+                          {billingLoading ? "Loading..." : "Manage Billing"}
+                        </Button>
+                      )}
                     </div>
                   </div>
                 </CardContent>

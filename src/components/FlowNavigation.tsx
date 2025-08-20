@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
-import { Terminal, Menu, X, User, Settings } from "lucide-react";
+import { Terminal, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { ProfileMenu } from "@/components/ui/ProfileMenu";
 
 export const FlowNavigation = () => {
   const [activeSection, setActiveSection] = useState("hero");
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { user, signOut } = useAuth();
-  const navigate = useNavigate();
+  const { user, profile } = useAuth();
 
   const navItems = [
     { id: "hero", label: "Home", href: "/" },
@@ -73,23 +73,7 @@ export const FlowNavigation = () => {
           {/* User Authentication */}
           <div className="hidden md:flex items-center space-x-4">
             {user ? (
-              <div className="flex items-center space-x-3">
-                <Link to="/settings">
-                  <Button variant="ghost" size="sm" className="flex items-center gap-2">
-                    <Settings className="h-4 w-4" />
-                    Settings
-                  </Button>
-                </Link>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={signOut}
-                  className="flex items-center gap-2"
-                >
-                  <User className="h-4 w-4" />
-                  Sign Out
-                </Button>
-              </div>
+              <ProfileMenu profile={profile} />
             ) : (
               <Link to="/auth">
                 <Button variant="outline" size="sm">
@@ -144,24 +128,7 @@ export const FlowNavigation = () => {
               {/* Mobile Auth */}
               <div className="pt-4 border-t border-border">
                 {user ? (
-                  <div className="space-y-2">
-                    <Link 
-                      to="/settings"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="block px-3 py-2 text-base font-medium text-foreground/80"
-                    >
-                      Settings
-                    </Link>
-                    <button
-                      onClick={() => {
-                        signOut();
-                        setIsMobileMenuOpen(false);
-                      }}
-                      className="block px-3 py-2 text-base font-medium text-foreground/80"
-                    >
-                      Sign Out
-                    </button>
-                  </div>
+                  <ProfileMenu profile={profile} />
                 ) : (
                   <Link
                     to="/auth"
