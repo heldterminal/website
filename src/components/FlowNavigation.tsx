@@ -1,15 +1,49 @@
 import { useState, useEffect } from "react";
 import { Terminal, Menu, X, User, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/useAuth";
 import { Link, useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 export const FlowNavigation = () => {
   const [activeSection, setActiveSection] = useState("hero");
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [profile, setProfile] = useState<any>(null);
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+
+  // Fetch user profile data including avatar
+  useEffect(() => {
+    if (user) {
+      fetchProfile();
+    }
+  }, [user]);
+
+  const fetchProfile = async () => {
+    try {
+      const { data } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("user_id", user?.id)
+        .maybeSingle();
+      
+      setProfile(data);
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+    }
+  };
+
+  const getInitials = (name?: string, email?: string) => {
+    if (name) {
+      return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+    }
+    if (email) {
+      return email.slice(0, 2).toUpperCase();
+    }
+    return 'U';
+  };
 
   const navItems = [
     { id: "hero", label: "Home", href: "/" },
@@ -80,15 +114,25 @@ export const FlowNavigation = () => {
                     Settings
                   </Button>
                 </Link>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={signOut}
-                  className="flex items-center gap-2"
-                >
-                  <User className="h-4 w-4" />
-                  Sign Out
-                </Button>
+                <div className="flex items-center gap-3">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage 
+                      src={profile?.avatar_url} 
+                      alt={profile?.full_name || user.email || "User"} 
+                    />
+                    <AvatarFallback className="bg-primary/10 text-primary text-xs">
+                      {getInitials(profile?.full_name, user.email)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={signOut}
+                    className="flex items-center gap-2"
+                  >
+                    Sign Out
+                  </Button>
+                </div>
               </div>
             ) : (
               <Link to="/auth">
@@ -145,6 +189,25 @@ export const FlowNavigation = () => {
               <div className="pt-4 border-t border-border">
                 {user ? (
                   <div className="space-y-2">
+                    <div className="flex items-center gap-3 px-3 py-2">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage 
+                          src={profile?.avatar_url} 
+                          alt={profile?.full_name || user.email || "User"} 
+                        />
+                        <AvatarFallback className="bg-primary/10 text-primary text-xs">
+                          {getInitials(profile?.full_name, user.email)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-medium text-foreground truncate">
+                          {profile?.full_name || user.email}
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          {profile?.subscription_status === 'active' ? 'Pro' : 'Free'}
+                        </div>
+                      </div>
+                    </div>
                     <Link 
                       to="/settings"
                       onClick={() => setIsMobileMenuOpen(false)}
