@@ -2,59 +2,64 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Cognito-Flux Design System - Glass & Water Theme */
 
 @layer base {
   :root {
-    /* Pure white foundation */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 15%;
+    /* Base colors - Slate gray foundation */
+    --background: 220 13% 6%;
+    --foreground: 165 85% 95%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 15%;
+    /* Glass morphism cards */
+    --card: 220 15% 8%;
+    --card-foreground: 165 80% 92%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 15%;
+    --popover: 220 18% 10%;
+    --popover-foreground: 165 80% 92%;
 
-    /* Subtle gray as primary */
-    --primary: 0 0% 25%;
-    --primary-foreground: 0 0% 100%;
+    /* Teal-turquoise primary */
+    --primary: 165 85% 45%;
+    --primary-foreground: 220 20% 5%;
+    --primary-glow: 165 100% 65%;
 
-    /* Light gray secondary */
-    --secondary: 0 0% 97%;
-    --secondary-foreground: 0 0% 25%;
+    /* Secondary glass tones */
+    --secondary: 220 15% 12%;
+    --secondary-foreground: 165 70% 85%;
 
-    /* Ultra light muted */
-    --muted: 0 0% 98%;
-    --muted-foreground: 0 0% 45%;
+    --muted: 220 12% 15%;
+    --muted-foreground: 165 25% 65%;
 
-    /* Minimal accent */
-    --accent: 0 0% 96%;
-    --accent-foreground: 0 0% 25%;
+    /* Accent turquoise */
+    --accent: 175 80% 50%;
+    --accent-foreground: 220 20% 5%;
 
-    --destructive: 0 70% 50%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 165 85% 95%;
 
-    /* Ethereal borders */
-    --border: 0 0% 92%;
-    --input: 0 0% 96%;
-    --ring: 0 0% 25%;
+    --border: 220 15% 18%;
+    --input: 220 15% 12%;
+    --ring: 165 85% 45%;
 
-    /* Beautiful gradients */
-    --gradient-white: linear-gradient(135deg, hsl(0 0% 100%), hsl(0 0% 98%));
-    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 97%));
+    --radius: 1rem;
+
+    /* Glass morphism variables */
+    --glass-bg: 220 15% 8% / 0.6;
+    --glass-border: 165 50% 70% / 0.2;
+    --glass-shadow: 0 20px 40px -12px hsl(220 50% 0% / 0.5);
     
-    /* Elegant shadows */
-    --shadow-soft: 0 2px 8px -2px hsl(0 0% 0% / 0.05);
-    --shadow-gentle: 0 4px 16px -4px hsl(0 0% 0% / 0.08);
-    --shadow-float: 0 8px 32px -8px hsl(0 0% 0% / 0.12);
-
-    /* Smooth transitions */
-    --transition-elegant: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-    --radius: 0.5rem;
+    /* Water effect gradients */
+    --gradient-flow: linear-gradient(135deg, hsl(165 85% 45% / 0.3), hsl(175 80% 50% / 0.2), hsl(185 75% 55% / 0.1));
+    --gradient-depth: linear-gradient(180deg, hsl(220 13% 6%), hsl(220 18% 10%));
+    --gradient-surface: linear-gradient(145deg, hsl(165 85% 45% / 0.15), transparent, hsl(175 80% 50% / 0.1));
+    
+    /* Animation variables */
+    --scroll-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --flow-ease: cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Backdrop blur strength */
+    --blur-light: blur(8px);
+    --blur-medium: blur(16px);
+    --blur-heavy: blur(24px);
 
     --sidebar-background: 0 0% 98%;
 
@@ -73,42 +78,122 @@ All colors MUST be HSL.
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+}
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+/* Glass morphism components */
+@layer components {
+  .glass-panel {
+    @apply backdrop-blur-xl bg-card/60 border border-white/20 rounded-2xl shadow-2xl;
+    background: hsl(var(--glass-bg));
+    border: 1px solid hsl(var(--glass-border));
+    box-shadow: var(--glass-shadow);
+  }
+  
+  .glass-nav {
+    @apply fixed top-0 left-0 right-0 z-50 backdrop-blur-md;
+    background: hsl(var(--glass-bg));
+    border-bottom: 1px solid hsl(var(--glass-border));
+  }
+  
+  .flow-gradient {
+    background: var(--gradient-flow);
+  }
+  
+  .depth-gradient {
+    background: var(--gradient-depth);
+  }
+  
+  .surface-gradient {
+    background: var(--gradient-surface);
+  }
+  
+  .text-glow {
+    text-shadow: 0 0 20px hsl(var(--primary-glow) / 0.5);
+  }
+  
+  .glow-ring {
+    box-shadow: 0 0 0 1px hsl(var(--primary) / 0.2), 
+                0 0 20px hsl(var(--primary) / 0.3),
+                0 0 40px hsl(var(--primary) / 0.1);
+  }
+}
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+/* Scroll-driven animations */
+@layer utilities {
+  .scroll-fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: transform 0.8s var(--scroll-ease), opacity 0.6s var(--scroll-ease);
+    will-change: transform, opacity;
+  }
+  
+  .scroll-fade-in.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .scroll-scale {
+    transform: scale(0.8);
+    transition: transform 0.8s var(--scroll-ease);
+    will-change: transform;
+  }
+  
+  .scroll-scale.in-view {
+    transform: scale(1);
+  }
+  
+  .scroll-slide-left {
+    transform: translateX(-50px);
+    opacity: 0;
+    transition: transform 0.8s var(--scroll-ease), opacity 0.6s var(--scroll-ease);
+    will-change: transform, opacity;
+  }
+  
+  .scroll-slide-left.in-view {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  
+  .scroll-slide-right {
+    transform: translateX(50px);
+    opacity: 0;
+    transition: transform 0.8s var(--scroll-ease), opacity 0.6s var(--scroll-ease);
+    will-change: transform, opacity;
+  }
+  
+  .scroll-slide-right.in-view {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  
+  .parallax-slow {
+    transform: translateY(var(--scroll-y, 0));
+  }
+  
+  .parallax-fast {
+    transform: translateY(var(--scroll-y-fast, 0));
+  }
+}
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+/* Orbit animation for vision section */
+@keyframes orbit {
+  from {
+    transform: rotate(0deg) translateX(120px) rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg) translateX(120px) rotate(-360deg);
+  }
+}
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+/* Floating animation for particles */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+    opacity: 0.8;
   }
 }
 
