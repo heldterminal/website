@@ -13,6 +13,7 @@ export const FlowNavigation = () => {
   const navItems = [
     { id: "pricing", label: "Pricing", href: "/pricing" },
     { id: "team", label: "Our Team", href: "/team" },
+    { id: "contact", label: "Contact", href: "/contact" },
   ];
 
   useEffect(() => {

@@ -2,6 +2,7 @@ import { ScrollSection } from "@/components/ScrollSection";
 import { Card, CardContent } from "@/components/ui/card";
 import { Linkedin } from "lucide-react";
 import { FlowNavigation } from "@/components/FlowNavigation";
+import TeamMissionFlow from "@/components/TeamMissionFlow";
 
 const Team = () => {
   const team = [
@@ -20,7 +21,7 @@ const Team = () => {
       bio: "Prev Machine Learning Engineer at Doordash, Arize AI, IBM (DataStax). Berkeley CS + Statistics '25.",
       avatar: "",
       social: {
-        linkedin: "#"
+        linkedin: "https://www.linkedin.com/in/saikolasani/"
       }
     },
     {
@@ -29,7 +30,7 @@ const Team = () => {
       bio: "Prev Product Manager at Atlassian, SPL at Scale AI. Berkeley CS + Haas '25.",
       avatar: "",
       social: {
-        linkedin: "#"
+        linkedin: "https://www.linkedin.com/in/truong-h-nguyen/"
       }
     }
   ];
@@ -94,51 +95,7 @@ const Team = () => {
           </div>
         </ScrollSection>
 
-        <ScrollSection className="py-20 px-4 bg-card/30">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-8">
-              Our Mission
-            </h2>
-            <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-              We believe that command-line interfaces are incredibly powerful but often 
-              intimidating and hard to master. Our mission is to bridge that gap by 
-              making CLI tools intelligent, intuitive, and accessible to developers 
-              of all skill levels.
-            </p>
-            
-            <div className="grid md:grid-cols-3 gap-8 mt-16">
-              <div className="glass-panel p-6">
-                <h3 className="text-xl font-semibold text-foreground mb-4">
-                  🚀 Innovation
-                </h3>
-                <p className="text-muted-foreground">
-                  Pushing the boundaries of what's possible with AI-powered 
-                  developer tools.
-                </p>
-              </div>
-              
-              <div className="glass-panel p-6">
-                <h3 className="text-xl font-semibold text-foreground mb-4">
-                  🤝 Collaboration
-                </h3>
-                <p className="text-muted-foreground">
-                  Building tools that help teams share knowledge and work 
-                  together more effectively.
-                </p>
-              </div>
-              
-              <div className="glass-panel p-6">
-                <h3 className="text-xl font-semibold text-foreground mb-4">
-                  💡 Accessibility
-                </h3>
-                <p className="text-muted-foreground">
-                  Making powerful development tools accessible to everyone, 
-                  regardless of experience level.
-                </p>
-              </div>
-            </div>
-          </div>
-        </ScrollSection>
+        <TeamMissionFlow />
       </main>
     </div>
   );
