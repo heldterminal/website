@@ -1,5 +1,5 @@
 import { ScrollSection } from "./ScrollSection";
-import { Sparkles, ArrowUpRight, Github, Mail, Twitter } from "lucide-react";
+import { Sparkles, ArrowUpRight, Github, Mail, Twitter, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
 import { useSmoothProgress } from "@/hooks/useSmoothProgress";
@@ -25,6 +25,7 @@ export const ExperienceSection = () => {
   const [useCase, setUseCase] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
+  const [showDemo, setShowDemo] = useState(false);
 
   const submitWaitlist = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -108,6 +109,7 @@ export const ExperienceSection = () => {
               <Button 
                 size="lg" 
                 className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 text-lg rounded-xl glow-ring group"
+                onClick={() => setShowDemo(true)}
               >
                 Open Demo
                 <ArrowUpRight className="w-5 h-5 ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
@@ -179,6 +181,36 @@ export const ExperienceSection = () => {
             </div>
           </div>
         </ScrollSection>
+
+        {/* Demo Video Modal */}
+        {showDemo && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="bg-background rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+              <div className="flex items-center justify-between p-4 border-b border-border">
+                <h3 className="text-lg font-semibold text-foreground">Demo</h3>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowDemo(false)}
+                  className="h-8 w-8 p-0 hover:bg-muted"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+              <div className="p-4">
+                <video
+                  className="w-full h-auto rounded-lg"
+                  controls
+                  autoPlay
+                  muted
+                >
+                  <source src="/placeholder.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </div>
+          </div>
+        )}
 
         <ScrollSection animation="slide-left" delay={600}>
           <div className="flex justify-center space-x-6">
