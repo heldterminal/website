@@ -46,6 +46,12 @@ const Settings = () => {
 
       if (error && error.code !== "PGRST116") {
         console.error("Error fetching profile:", error);
+        // Set default values if profile fetch fails
+        setProfileData({
+          full_name: "",
+          email: user?.email || "",
+          github_username: ""
+        });
       } else if (data) {
         setProfileData({
           full_name: data.full_name || "",
@@ -53,13 +59,21 @@ const Settings = () => {
           github_username: data.github_username || ""
         });
       } else {
-        setProfileData(prev => ({
-          ...prev,
-          email: user?.email || ""
-        }));
+        // No profile found, set default values
+        setProfileData({
+          full_name: "",
+          email: user?.email || "",
+          github_username: ""
+        });
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error fetching profile:", error);
+      // Set default values on error
+      setProfileData({
+        full_name: "",
+        email: user?.email || "",
+        github_username: ""
+      });
     }
   };
 
@@ -68,16 +82,41 @@ const Settings = () => {
     
     setLoadingState(true);
     try {
-      const { error } = await supabase
+      // First check if profile exists
+      const { data: existingProfile, error: fetchError } = await supabase
         .from("profiles")
-        .upsert({
-          user_id: user.id,
-          full_name: profileData.full_name,
-          email: profileData.email,
-          github_username: profileData.github_username
-        });
+        .select("id")
+        .eq("user_id", user.id)
+        .single();
 
-      if (error) throw error;
+      if (fetchError && fetchError.code !== "PGRST116") {
+        throw fetchError;
+      }
+
+      let result;
+      if (existingProfile) {
+        // Update existing profile
+        result = await supabase
+          .from("profiles")
+          .update({
+            full_name: profileData.full_name,
+            email: profileData.email,
+            github_username: profileData.github_username
+          })
+          .eq("user_id", user.id);
+      } else {
+        // Insert new profile
+        result = await supabase
+          .from("profiles")
+          .insert({
+            user_id: user.id,
+            full_name: profileData.full_name,
+            email: profileData.email,
+            github_username: profileData.github_username
+          });
+      }
+
+      if (result.error) throw result.error;
 
       toast({
         title: "Success",
@@ -86,9 +125,10 @@ const Settings = () => {
       
       await refreshProfile();
     } catch (error: any) {
+      console.error("Profile update error:", error);
       toast({
         title: "Error",
-        description: error.message,
+        description: error.message || "Failed to update profile",
         variant: "destructive"
       });
     } finally {
@@ -210,8 +250,8 @@ const Settings = () => {
                         id="email"
                         type="email"
                         value={profileData.email}
-                        onChange={(e) => setProfileData(prev => ({ ...prev, email: e.target.value }))}
-                        className="bg-background/50 border-border"
+                        disabled
+                        className="bg-muted/50 border-border text-muted-foreground cursor-not-allowed"
                       />
                     </div>
                   </div>
