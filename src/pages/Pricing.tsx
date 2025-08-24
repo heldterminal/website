@@ -3,8 +3,23 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check, Terminal, Zap, Users } from "lucide-react";
 import { FlowNavigation } from "@/components/FlowNavigation";
+import { useNavigate } from "react-router-dom";
 
 const Pricing = () => {
+  const navigate = useNavigate();
+  
+  const handlePlanAction = (planName: string, cta: string) => {
+    if (cta === "Contact Sales") {
+      navigate("/contact");
+    } else if (cta === "Start Pro Trial") {
+      // Handle Pro trial logic here
+      console.log("Pro trial clicked");
+    } else if (cta === "Get Started Free") {
+      // Handle Free plan logic here
+      console.log("Free plan clicked");
+    }
+  };
+
   const plans = [
     {
       name: "Free",
@@ -113,6 +128,7 @@ const Pricing = () => {
                       <Button 
                         className="w-full mt-auto" 
                         variant={plan.popular ? "default" : "outline"}
+                        onClick={() => handlePlanAction(plan.name, plan.cta)}
                       >
                         {plan.cta}
                       </Button>
