@@ -6,12 +6,12 @@ const TerminalBackground = () => {
 
   const commands = useMemo(
     () => [
-      "tremctl start logging",
-      "trem search 'docker setup'",
-      "trem recall 'kubernetes deploy'",
-      "trem share --team 'build process'",
-      "trem analytics --last-30-days",
-      "trem models --list available"
+              "coroctl start logging",
+        "coro search 'docker setup'",
+        "coro recall 'kubernetes deploy'",
+        "coro share --team 'build process'",
+        "coro analytics --last-30-days",
+        "coro models --list available"
     ],
     []
   );
@@ -59,7 +59,7 @@ const TerminalBackground = () => {
       
       {/* Floating code snippets */}
       <div className="absolute top-20 right-10 font-mono text-xs text-muted-foreground/50 space-y-2">
-        <div>ACTIVE • /Users/dev/.hyper_plugins/local/trem-glass-ui/backend/state/dump.jsonl</div>
+                        <div>ACTIVE • /Users/dev/.hyper_plugins/local/coro-glass-ui/backend/state/dump.jsonl</div>
         <div>SSH session logging ENABLED</div>
         <div>Shipper loop started (pid 40756), every 120s.</div>
       </div>

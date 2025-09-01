@@ -27,31 +27,31 @@ const handler = async (req: Request): Promise<Response> => {
     const { name, email, phone, message, to }: ContactEmailRequest = await req.json();
 
     const emailResponse = await resend.emails.send({
-      from: "Trem Contact Form <onboarding@resend.dev>",
+      from: "Coro Contact Form <onboarding@resend.dev>",
       to: [to],
       subject: `New Contact Form Submission from ${name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h1 style="color: #333; border-bottom: 2px solid #007acc; padding-bottom: 10px;">
+          <h1 style="color: #333; border-bottom: 2px solid #4f46e5; padding-bottom: 10px;">
             New Contact Form Submission
           </h1>
           
           <div style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border-radius: 5px;">
-            <h2 style="color: #007acc; margin-top: 0;">Contact Information</h2>
+            <h2 style="color: #4f46e5; margin-top: 0;">Contact Information</h2>
             <p><strong>Name:</strong> ${name}</p>
             <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
             ${phone ? `<p><strong>Phone:</strong> <a href="tel:${phone}">${phone}</a></p>` : ''}
           </div>
 
           <div style="margin: 20px 0; padding: 15px; background-color: #f9f9f9; border-radius: 5px;">
-            <h2 style="color: #007acc; margin-top: 0;">Message</h2>
+            <h2 style="color: #4f46e5; margin-top: 0;">Message</h2>
             <div style="white-space: pre-wrap; line-height: 1.6;">${message}</div>
           </div>
 
           <hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;">
           
           <p style="color: #666; font-size: 14px;">
-            This message was sent from the Trem website contact form.
+            This message was sent from the Coro website contact form.
           </p>
         </div>
       `,

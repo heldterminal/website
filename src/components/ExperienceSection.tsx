@@ -15,7 +15,7 @@ export const ExperienceSection = () => {
     { icon: Mail, label: "Contact", href: "#" }
   ];
 
-  // Fluid, reversible scroll effect for the “Get Started with Trem” panel
+  // Fluid, reversible scroll effect for the "Get Started with Coro" panel
   const panelRef = useRef<HTMLDivElement>(null);
   const panelProgress = useSmoothProgress(panelRef, { startPct: 0.88, endPct: 0.42, smoothing: 0.08 });
 
@@ -80,11 +80,11 @@ export const ExperienceSection = () => {
           
           <h2 className="text-5xl md:text-6xl font-bold mb-6 text-glow">
             Ready to
-            <span className="text-primary block">use Trem?</span>
+            <span className="text-primary block">use Coro?</span>
           </h2>
           
           <p className="text-xl text-foreground/70 mb-12 max-w-2xl mx-auto">
-            Ship without runbooks. Trem gives your team recall and semantic search for every command, 
+            Ship without runbooks. Coro gives your team recall and semantic search for every command, 
             so anyone can safely rerun what already worked.
           </p>
         </ScrollSection>
@@ -99,7 +99,7 @@ export const ExperienceSection = () => {
               willChange: "transform, box-shadow",
             }}
           >
-            <h3 className="text-2xl font-bold mb-6">Get Started with Trem</h3>
+            <h3 className="text-2xl font-bold mb-6">Get Started with Coro</h3>
             <p className="text-foreground/70 mb-8">
               Import your shell history, search by intent, and share commands with your team. 
               Keep provenance and permissions intact.
@@ -232,7 +232,7 @@ export const ExperienceSection = () => {
         <ScrollSection animation="fade" delay={800}>
           <div className="mt-16 pt-8 border-t border-white/10">
             <p className="text-sm text-foreground/50">
-              © 2025 Trem. Recall and semantic search for commands.
+                              © 2025 Coro. Recall and semantic search for commands.
             </p>
           </div>
         </ScrollSection>

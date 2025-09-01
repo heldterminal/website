@@ -1,19 +1,19 @@
-const TremSearchPanel = () => {
+const CoroSearchPanel = () => {
   return (
     <section className="relative py-20 px-6">
       <div className="mx-auto w-full max-w-6xl">
-        <div className="trem-search-panel p-6 md:p-8 rounded-3xl glass-panel">
+        <div className="coro-search-panel p-6 md:p-8 rounded-3xl glass-panel">
           <div className="flex items-center gap-3 mb-6">
             <span className="px-3 py-1 rounded-full bg-primary/15 text-primary text-sm">Ask AI</span>
             <span className="px-3 py-1 rounded-full bg-white/5 text-foreground/70 text-sm">Search only</span>
-            <span className="ml-auto px-3 py-1 rounded-full bg-white/5 text-foreground/70 text-sm">Trem · Model</span>
+                          <span className="ml-auto px-3 py-1 rounded-full bg-white/5 text-foreground/70 text-sm">Coro · Model</span>
           </div>
           <div className="rounded-2xl bg-black/30 border border-white/10 p-6 md:p-8">
             <div className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               Make terminals <span className="text-primary">collaborative</span>
             </div>
             <p className="text-foreground/80 text-lg leading-relaxed max-w-3xl">
-              Trem lets teams ask for commands instead of people. Search by intent, reuse safely, and keep knowledge
+              Coro lets teams ask for commands instead of people. Search by intent, reuse safely, and keep knowledge
               close to where work happens — your terminal.
             </p>
             <div className="mt-6 grid gap-3">
@@ -37,6 +37,6 @@ const TremSearchPanel = () => {
   );
 };
 
-export default TremSearchPanel;
+export default CoroSearchPanel;
 
 

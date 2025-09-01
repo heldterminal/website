@@ -39,7 +39,7 @@ export const CognitionSection = () => {
         <ScrollSection animation="fade" delay={200}>
           <div className="text-center mb-20">
             <h2 className="text-5xl md:text-6xl font-bold mb-6 text-glow">
-              Trem
+                              Coro
               <span className="text-primary"> Architecture</span>
             </h2>
             <p className="text-xl text-foreground/70 max-w-3xl mx-auto">
@@ -102,7 +102,7 @@ export const CognitionSection = () => {
               useEffect(() => {
                 let cancelled = false;
                 const message =
-                  "Trem turns every successful command into shared, permissioned knowledge with full context (who ran it, where, flags, working directory). No more copy‑pasting from runbooks or pinging teammates.";
+                  "Coro turns every successful command into shared, permissioned knowledge with full context (who ran it, where, flags, working directory). No more copy‑pasting from runbooks or pinging teammates.";
                 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
                 (async () => {
                   for (let i = 0; i <= message.length; i++) {
@@ -122,7 +122,7 @@ export const CognitionSection = () => {
                       <div className="w-3 h-3 rounded-full bg-red-500/70" />
                       <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
                       <div className="w-3 h-3 rounded-full bg-green-500/70" />
-                      <span className="ml-3 text-sm text-foreground/70">bash — trem</span>
+                      <span className="ml-3 text-sm text-foreground/70">bash — coro</span>
                     </div>
                     <div className="p-5 font-mono text-foreground/90">
                       <span className="text-primary mr-2">$</span>

@@ -84,7 +84,7 @@ const Contact = () => {
                 Get in <span className="text-glow text-primary">Touch</span>
               </h1>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Have questions about Trem? Want to share feedback or discuss partnerships? 
+                Have questions about Coro? Want to share feedback or discuss partnerships? 
                 We'd love to hear from you.
               </p>
             </div>

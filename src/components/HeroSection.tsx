@@ -14,7 +14,7 @@ export const HeroSection = () => {
           <div className="flex items-center justify-center mb-6">
             <Terminal className="h-16 w-16 text-primary mr-4" />
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6 leading-tight">
-              <span className="text-glow">Trem</span> - AI Terminal
+              <span className="text-glow">Coro</span> - AI Terminal
               <br />
               for Command
               <br />

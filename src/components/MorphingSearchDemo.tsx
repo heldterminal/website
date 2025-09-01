@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
-// A pinned, scroll-driven demo that morphs from a terminal into a Trem Search panel
+// A pinned, scroll-driven demo that morphs from a terminal into a Coro Search panel
 // and back on reverse scroll. Pure React + CSS (no external motion libs).
 const clamp = (v: number, min: number, max: number) => Math.max(min, Math.min(max, v));
 
@@ -12,7 +12,7 @@ export const MorphingSearchDemo = () => {
 
   const message = useMemo(
     () =>
-      "Trem turns every successful command into shared, permissioned knowledge with full context (who ran it, where, flags, working directory). No more copy‑pasting from runbooks or pinging teammates.",
+                      "Coro turns every successful command into shared, permissioned knowledge with full context (who ran it, where, flags, working directory). No more copy‑pasting from runbooks or pinging teammates.",
     []
   );
 
@@ -89,7 +89,7 @@ export const MorphingSearchDemo = () => {
                   <div className="w-3 h-3 rounded-full bg-red-500/70" />
                   <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
                   <div className="w-3 h-3 rounded-full bg-green-500/70" />
-                  <span className="ml-3 text-sm text-foreground/70">bash — trem</span>
+                  <span className="ml-3 text-sm text-foreground/70">bash — coro</span>
                 </div>
                 <div className="p-6 font-mono text-foreground/90">
                   <div className="flex items-start">
@@ -107,20 +107,20 @@ export const MorphingSearchDemo = () => {
       {/* Search block below that we morph into */}
       <div ref={searchRef} className="mx-auto w-full max-w-6xl -mt-24">
         <div
-          className="trem-search-panel p-6 md:p-8 rounded-3xl glass-panel"
+                          className="coro-search-panel p-6 md:p-8 rounded-3xl glass-panel"
           style={{ transform: `translateY(${searchTranslateY}px) scale(${searchScale})`, opacity: searchOpacity }}
         >
           <div className="flex items-center gap-3 mb-6">
             <span className="px-3 py-1 rounded-full bg-primary/15 text-primary text-sm">Ask AI</span>
             <span className="px-3 py-1 rounded-full bg-white/5 text-foreground/70 text-sm">Search only</span>
-            <span className="ml-auto px-3 py-1 rounded-full bg-white/5 text-foreground/70 text-sm">Trem · Model</span>
+                            <span className="ml-auto px-3 py-1 rounded-full bg-white/5 text-foreground/70 text-sm">Coro · Model</span>
           </div>
           <div className="rounded-2xl bg-black/30 border border-white/10 p-6 md:p-8">
             <div className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               Make terminals <span className="text-primary">collaborative</span>
             </div>
             <p className="text-foreground/80 text-lg leading-relaxed max-w-3xl">
-              Trem lets teams ask for commands instead of people. Search by intent, reuse safely, and keep knowledge
+                              Coro lets teams ask for commands instead of people. Search by intent, reuse safely, and keep knowledge
               close to where work happens — your terminal.
             </p>
             <div className="mt-6 grid gap-3">

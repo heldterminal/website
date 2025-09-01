@@ -39,7 +39,7 @@ export const VisionSection = () => {
                 <div className="p-2 rounded-lg bg-primary/20">
                   <Eye className="w-6 h-6 text-primary" />
                 </div>
-                <span className="text-primary font-medium">Why Trem</span>
+                <span className="text-primary font-medium">Why Coro</span>
               </div>
               
               <h2 className="text-5xl font-bold mb-6 text-glow">
@@ -48,7 +48,7 @@ export const VisionSection = () => {
               </h2>
               
               <p className="text-xl text-foreground/70 mb-8 leading-relaxed">
-                Trem lets teams ask for commands instead of people. Search by intent, reuse safely, 
+                Coro lets teams ask for commands instead of people. Search by intent, reuse safely, 
                 and keep knowledge close to where work happens — your terminal.
               </p>
             </ScrollSection>
@@ -77,7 +77,7 @@ export const VisionSection = () => {
                   <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-primary/20 flex items-center justify-center">
                     <Sparkles className="w-8 h-8 text-primary" />
                   </div>
-                  <h3 className="text-xl font-bold mb-2">Trem Core</h3>
+                  <h3 className="text-xl font-bold mb-2">Coro Core</h3>
                   <p className="text-sm text-foreground/70">Recall + Search Engine</p>
                 </div>
 
