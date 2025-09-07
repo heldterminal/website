@@ -10,7 +10,7 @@ const Pricing = () => {
   
   const handlePlanAction = (planName: string, cta: string) => {
     if (cta === "Contact Sales") {
-      navigate("/contact");
+      navigate("/#contact-section");
     } else if (cta === "Start Pro Trial") {
       // Handle Pro trial logic here
       console.log("Pro trial clicked");
@@ -82,17 +82,34 @@ const Pricing = () => {
       <main className="pt-20">
         <ScrollSection className="py-20 px-4">
           <div className="max-w-6xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-              Simple, <span className="text-glow text-primary">Transparent</span> Pricing
-            </h1>
-            <p className="text-xl text-muted-foreground mb-16 max-w-3xl mx-auto">
-              Choose the perfect plan for your needs. Upgrade or downgrade at any time.
-            </p>
+            <ScrollSection animation="fade" delay={50}>
+              <h1 
+                className="text-5xl sm:text-6xl lg:text-7xl font-light leading-tight text-balance tracking-tight mb-6"
+                style={{ color: "hsl(var(--foreground))", fontWeight: 300, lineHeight: 1.1, letterSpacing: "-0.02em" }}
+              >
+                Choose{" "}
+                <span
+                  style={{ color: "hsl(var(--foreground))", fontWeight: 300 }}
+                  className="animate-in fade-in duration-1000 delay-100"
+                >
+                  Your
+                </span>{" "}
+                Plan
+              </h1>
+            </ScrollSection>
+            <ScrollSection animation="fade" delay={100}>
+              <p 
+                className="text-lg leading-relaxed text-pretty max-w-3xl mx-auto mb-16"
+                style={{ color: "hsl(var(--muted-foreground))", lineHeight: 1.6, fontWeight: 300 }}
+              >
+                Start free and scale as your team grows. All plans include our core AI-powered command recall features.
+              </p>
+            </ScrollSection>
             
             <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto items-stretch">
               {plans.map((plan, index) => (
-                <ScrollSection key={plan.name} delay={index * 200}>
-                  <Card className={`glass-panel relative h-full flex flex-col ${plan.popular ? 'ring-2 ring-primary glow-ring' : ''}`}>
+                <ScrollSection key={plan.name} animation={index === 0 ? "slide-left" : index === 1 ? "scale" : "slide-right"} delay={index === 1 ? 200 : 150}>
+                  <Card className={`glass-panel relative h-full flex flex-col hover:scale-105 hover:-translate-y-2 transition-all duration-500 ${plan.popular ? 'ring-2 ring-primary glow-ring' : ''}`}>
                     {plan.popular && (
                       <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                         <span className="bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-medium">
@@ -142,50 +159,60 @@ const Pricing = () => {
 
         <ScrollSection className="py-20 px-4 bg-card/30">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-8">
-              Frequently Asked Questions
-            </h2>
+            <ScrollSection animation="fade" delay={50}>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-8">
+                Frequently Asked Questions
+              </h2>
+            </ScrollSection>
             
-            <div className="grid md:grid-cols-2 gap-8 text-left">
-              <div className="glass-panel p-6">
-                <h3 className="text-lg font-semibold text-foreground mb-3">
-                  What are tokens?
-                </h3>
-                <p className="text-muted-foreground">
-                  Tokens are units of AI processing. Each command query, semantic search, 
-                  and AI analysis consumes tokens based on complexity.
-                </p>
-              </div>
+            <div className="grid md:grid-cols-2 gap-8 text-left items-stretch">
+              <ScrollSection animation="slide-left" delay={100}>
+                <div className="glass-panel p-6 hover:scale-105 hover:-translate-y-1 transition-all duration-500 h-full flex flex-col">
+                  <h3 className="text-lg font-semibold text-foreground mb-3">
+                    What are tokens?
+                  </h3>
+                  <p className="text-muted-foreground flex-grow">
+                    Tokens are units of AI processing. Each command query, semantic search, 
+                    and AI analysis consumes tokens based on complexity.
+                  </p>
+                </div>
+              </ScrollSection>
               
-              <div className="glass-panel p-6">
-                <h3 className="text-lg font-semibold text-foreground mb-3">
-                  Can I change plans anytime?
-                </h3>
-                <p className="text-muted-foreground">
-                  Yes! You can upgrade or downgrade your plan at any time. 
-                  Changes take effect immediately.
-                </p>
-              </div>
+              <ScrollSection animation="slide-right" delay={150}>
+                <div className="glass-panel p-6 hover:scale-105 hover:-translate-y-1 transition-all duration-500 h-full flex flex-col">
+                  <h3 className="text-lg font-semibold text-foreground mb-3">
+                    Can I change plans anytime?
+                  </h3>
+                  <p className="text-muted-foreground flex-grow">
+                    Yes! You can upgrade or downgrade your plan at any time. 
+                    Changes take effect immediately.
+                  </p>
+                </div>
+              </ScrollSection>
               
-              <div className="glass-panel p-6">
-                <h3 className="text-lg font-semibold text-foreground mb-3">
-                  Is there a free trial?
-                </h3>
-                <p className="text-muted-foreground">
-                  Yes! The Free plan is available forever. Pro users get a 14-day 
-                  trial to test all advanced features.
-                </p>
-              </div>
+              <ScrollSection animation="slide-left" delay={200}>
+                <div className="glass-panel p-6 hover:scale-105 hover:-translate-y-1 transition-all duration-500 h-full flex flex-col">
+                  <h3 className="text-lg font-semibold text-foreground mb-3">
+                    Is there a free trial?
+                  </h3>
+                  <p className="text-muted-foreground flex-grow">
+                    Yes! The Free plan is available forever. Pro users get a 14-day 
+                    trial to test all advanced features.
+                  </p>
+                </div>
+              </ScrollSection>
               
-              <div className="glass-panel p-6">
-                <h3 className="text-lg font-semibold text-foreground mb-3">
-                  What AI models are included?
-                </h3>
-                <p className="text-muted-foreground">
-                  Pro and Enterprise plans include access to GPT-4, Claude, and other 
-                  leading AI models for optimal command understanding.
-                </p>
-              </div>
+              <ScrollSection animation="slide-right" delay={250}>
+                <div className="glass-panel p-6 hover:scale-105 hover:-translate-y-1 transition-all duration-500 h-full flex flex-col">
+                  <h3 className="text-lg font-semibold text-foreground mb-3">
+                    What AI models are included?
+                  </h3>
+                  <p className="text-muted-foreground flex-grow">
+                    Pro and Enterprise plans include access to GPT-5, Claude, and other 
+                    leading AI models for optimal command understanding.
+                  </p>
+                </div>
+              </ScrollSection>
             </div>
           </div>
         </ScrollSection>

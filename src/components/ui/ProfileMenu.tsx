@@ -155,6 +155,13 @@ export const ProfileMenu = ({ profile }: ProfileMenuProps) => {
         <DropdownMenuSeparator />
         
         <DropdownMenuItem asChild>
+          <Link to="/account" className="flex items-center">
+            <User className="mr-2 h-4 w-4" />
+            <span>Account</span>
+          </Link>
+        </DropdownMenuItem>
+        
+        <DropdownMenuItem asChild>
           <Link to="/settings" className="flex items-center">
             <Settings className="mr-2 h-4 w-4" />
             <span>Settings</span>

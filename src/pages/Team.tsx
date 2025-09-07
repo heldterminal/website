@@ -16,19 +16,10 @@ const Team = () => {
       }
     },
     {
-      name: "Sai Kolasani",
-      role: "Co-Founder",
-      bio: "Prev Machine Learning Engineer at Doordash, Arize AI, IBM (DataStax). Berkeley CS + Statistics '25.",
-      avatar: "",
-      social: {
-        linkedin: "https://www.linkedin.com/in/saikolasani/"
-      }
-    },
-    {
       name: "Truong Nguyen",
       role: "Co-Founder",
       bio: "Prev Product Manager at Atlassian, SPL at Scale AI. Berkeley CS + Haas '25.",
-      avatar: "",
+      avatar: "/truong-nguyen.jpg",
       social: {
         linkedin: "https://www.linkedin.com/in/truong-h-nguyen/"
       }
@@ -42,18 +33,33 @@ const Team = () => {
       <main className="pt-20">
         <ScrollSection className="py-20 px-4">
           <div className="max-w-6xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-              Meet the <span className="text-glow text-primary">Team</span>
-            </h1>
-            <p className="text-xl text-muted-foreground mb-16 max-w-3xl mx-auto">
-              We're a passionate team of engineers, designers, and product experts 
-              building the past, present, and future of intelligent command-line interfaces.
-            </p>
+            <ScrollSection animation="fade" delay={100}>
+              <h1 
+                className="text-5xl sm:text-6xl lg:text-7xl font-light leading-tight text-balance tracking-tight mb-6"
+                style={{ color: "hsl(var(--foreground))", fontWeight: 300, lineHeight: 1.1, letterSpacing: "-0.02em" }}
+              >
+                Meet{" "}
+                <span
+                  style={{ color: "hsl(var(--foreground))", fontWeight: 300 }}
+                  className="animate-in fade-in duration-1000 delay-200"
+                >
+                  the
+                </span>{" "}
+                Team
+              </h1>
+            </ScrollSection>
+            <ScrollSection animation="fade" delay={200}>
+              <p 
+                className="text-lg leading-relaxed text-pretty max-w-3xl mx-auto mb-16"
+                style={{ color: "hsl(var(--muted-foreground))", lineHeight: 1.6, fontWeight: 300 }}
+              >
+We’re UC Berkeley grads reimagining the terminal for the modern team. Coro is an AI copilot that makes command history and workflows collaborative, automated, and intelligent.              </p>
+            </ScrollSection>
             
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch">
               {team.map((member, index) => (
-                <ScrollSection key={member.name} delay={index * 150}>
-                  <Card className="glass-panel hover:scale-105 transition-transform duration-300 h-full flex flex-col">
+                <ScrollSection key={member.name} animation={index === 0 ? "slide-left" : "slide-right"} delay={index === 0 ? 300 : 400}>
+                  <Card className="glass-panel hover:scale-105 hover:-translate-y-2 transition-all duration-500 h-full flex flex-col">
                     <CardContent className="p-6 text-center flex flex-col h-full">
                       <div className="relative mb-4">
                         {member.avatar ? (
@@ -95,7 +101,7 @@ const Team = () => {
           </div>
         </ScrollSection>
 
-        <TeamMissionFlow />
+        {/* <TeamMissionFlow /> */}
       </main>
     </div>
   );
