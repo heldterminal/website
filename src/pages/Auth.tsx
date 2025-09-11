@@ -23,9 +23,7 @@ const Auth = () => {
   // Parameters passed by the Hyper plugin
   const params = new URLSearchParams(window.location.search);
   const bridge = params.get("bridge");
-  // Use production site URL for OAuth redirects; fall back to current origin
-  const SITE_URL = "https://coro.vercel.app";
-  const callback = params.get("callback") || `${SITE_URL}/`;
+  const callback = params.get("callback") || `${window.location.origin}/`;
   const providerParam = params.get("provider") || "";
   const code_challenge = params.get("code_challenge") || "";
   const code_challenge_method = params.get("code_challenge_method") || "s256";
@@ -218,7 +216,7 @@ const Auth = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${SITE_URL}/auth?bridge=${encodeURIComponent(bridge)}`,
+          redirectTo: `${window.location.origin}/auth?bridge=${encodeURIComponent(bridge)}`,
           queryParams: { prompt: "select_account consent" },
         },
       });
@@ -228,7 +226,7 @@ const Auth = () => {
     }
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${SITE_URL}/`, queryParams: { prompt: "select_account consent" }, skipBrowserRedirect: true },
+      options: { redirectTo: `${window.location.origin}/`, queryParams: { prompt: "select_account consent" }, skipBrowserRedirect: true },
     });
     if (error) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
@@ -245,7 +243,7 @@ const Auth = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "github",
         options: {
-          redirectTo: `${SITE_URL}/auth?bridge=${encodeURIComponent(bridge)}`,
+          redirectTo: `${window.location.origin}/auth?bridge=${encodeURIComponent(bridge)}`,
           queryParams: { prompt: "consent" },
         },
       });
@@ -255,7 +253,7 @@ const Auth = () => {
     }
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "github",
-      options: { redirectTo: `${SITE_URL}/`, queryParams: { prompt: "consent" }, skipBrowserRedirect: true },
+      options: { redirectTo: `${window.location.origin}/`, queryParams: { prompt: "consent" }, skipBrowserRedirect: true },
     });
     if (error) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
