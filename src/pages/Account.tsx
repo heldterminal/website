@@ -21,7 +21,7 @@ const Account = () => {
         <div className="w-full max-w-md">
           <div className="flex items-center justify-center mb-8">
             <Terminal className="h-8 w-8 mr-2 text-primary" />
-            <h1 className="text-2xl font-bold text-foreground">Trem</h1>
+            <h1 className="text-2xl font-bold text-foreground">Coro</h1>
           </div>
           <Card className="glass-panel">
             <CardHeader className="text-center">
@@ -48,7 +48,7 @@ const Account = () => {
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center">
             <Terminal className="h-8 w-8 mr-2 text-primary" />
-            <h1 className="text-2xl font-bold text-foreground">Trem Account</h1>
+            <h1 className="text-2xl font-bold text-foreground">Coro Account</h1>
           </div>
           <Button variant="outline" onClick={() => navigate("/settings")}>
             <Settings className="h-4 w-4 mr-2" />
@@ -146,7 +146,7 @@ const Account = () => {
           <CardHeader>
             <CardTitle className="flex items-center">
               <Terminal className="h-5 w-5 mr-2" />
-              Hyper Plugin Integration
+               Coro Terminal Integration
             </CardTitle>
             <CardDescription>
               Manage your terminal authentication and API access
@@ -158,7 +158,7 @@ const Account = () => {
                 <div>
                   <h4 className="font-medium">Terminal Authentication</h4>
                   <p className="text-sm text-muted-foreground">
-                    Your Hyper terminal is authenticated and can access Trem APIs
+                    Your terminal is authenticated and can access Coro APIs
                   </p>
                 </div>
                 <Badge variant="default">Connected</Badge>
@@ -187,7 +187,7 @@ const Account = () => {
               </div>
               
               <div className="text-sm text-muted-foreground">
-                <p>• Click the User Icon in your Hyper terminal to open this page</p>
+                <p>• Click the User Icon in your terminal to open this page</p>
                 <p>• Your terminal automatically includes authentication tokens in API requests</p>
                 <p>• Regenerate token to refresh terminal access</p>
                 <p>• Sign out here to revoke terminal access</p>

@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Check, Terminal, Zap, Users } from "lucide-react";
 import { FlowNavigation } from "@/components/FlowNavigation";
 import { useNavigate } from "react-router-dom";
+import { PricingComparison } from "@/components/PricingComparison";
 
 const Pricing = () => {
   const navigate = useNavigate();
@@ -29,10 +30,10 @@ const Pricing = () => {
       icon: Terminal,
       features: [
         "5,000 tokens per month",
-        "Basic command tracking",
-        "Semantic search",
-        "Personal command history",
-        "Community support"
+        "Semantic command recall",
+        "State-aware capture (local)",
+        "Personal memory vault",
+        "No team workspace (local-only)"
       ],
       cta: "Get Started Free",
       popular: false
@@ -44,13 +45,12 @@ const Pricing = () => {
       description: "Advanced features for power users and small teams",
       icon: Zap,
       features: [
-        "20,000 tokens per month",
-        "Multiple AI models",
-        "Advanced analytics",
-        "Team knowledge sharing",
-        "Custom runbooks",
-        "Priority support",
-        "API access"
+        "50,000 tokens per month",
+        "Up to 10 seats",
+        "Team workspaces (up to 3)",
+        "Shared runbooks & procedures",
+        "Selective sync with provenance",
+        "Team knowledge sharing"
       ],
       cta: "Start Pro Trial",
       popular: true
@@ -62,13 +62,11 @@ const Pricing = () => {
       description: "Tailored solutions for large organizations",
       icon: Users,
       features: [
-        "Unlimited tokens",
-        "All AI models",
-        "Advanced security",
-        "SSO integration",
-        "Custom integrations",
-        "Dedicated support",
-        "On-premise deployment"
+        "Custom tokens per month",
+        "Custom seats & workspaces",
+        "Shared runbooks & procedures",
+        "Selective sync (BYODB/BYOK)",
+        "Custom integrations"
       ],
       cta: "Contact Sales",
       popular: false
@@ -156,6 +154,8 @@ const Pricing = () => {
             </div>
           </div>
         </ScrollSection>
+
+        <PricingComparison />
 
         <ScrollSection className="py-20 px-4 bg-card/30">
           <div className="max-w-4xl mx-auto text-center">

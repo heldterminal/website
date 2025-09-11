@@ -3,11 +3,13 @@ import { Button } from "@/components/ui/button";
 import { TerminalDemo } from "@/components/TerminalDemo";
 import { useAuth } from "@/hooks/useAuth";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 export const HeroSection = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const { toast } = useToast();
 
   const handleBookDemoClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -26,6 +28,14 @@ export const HeroSection = () => {
         element.scrollIntoView({ behavior: 'smooth' });
       }
     }
+  };
+
+  const handleDownloadClick = () => {
+    // Placeholder for future .dmg download
+    toast({
+      title: "Download coming soon",
+      description: "Mac .dmg installer will be available shortly.",
+    });
   };
 
   return (
@@ -109,10 +119,11 @@ export const HeroSection = () => {
                   Book a Demo
                 </Button>
               )}
-              <Link to="/auth">
+              {user ? (
                 <Button
                   variant="outline"
                   size="lg"
+                  onClick={handleDownloadClick}
                   className="px-8 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105 transform hover:-translate-y-1 bg-transparent"
                   style={{
                     borderColor: "hsl(var(--border))",
@@ -129,9 +140,33 @@ export const HeroSection = () => {
                     e.currentTarget.style.borderColor = "hsl(var(--border))"
                   }}
                 >
-                  Sign Up
+                  Download
                 </Button>
-              </Link>
+              ) : (
+                <Link to="/auth">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="px-8 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105 transform hover:-translate-y-1 bg-transparent"
+                    style={{
+                      borderColor: "hsl(var(--border))",
+                      color: "hsl(var(--foreground))",
+                      backgroundColor: "transparent",
+                      fontWeight: 500,
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = "hsl(var(--muted))"
+                      e.currentTarget.style.borderColor = "rgba(161,161,170,0.3)"
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = "transparent"
+                      e.currentTarget.style.borderColor = "hsl(var(--border))"
+                    }}
+                  >
+                    Sign Up
+                  </Button>
+                </Link>
+              )}
             </div>
           </ScrollSection>
 

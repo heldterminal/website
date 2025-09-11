@@ -16,6 +16,7 @@ export const FlowNavigation = () => {
     { id: "pricing", label: "Pricing", href: "/pricing" },
     { id: "team", label: "Our Team", href: "/team" },
     { id: "contact", label: "Contact", href: "/#contact-section" },
+    { id: "waitlist", label: "Waitlist", href: "/waitlist" },
   ];
 
   const handleContactClick = (e: React.MouseEvent) => {
