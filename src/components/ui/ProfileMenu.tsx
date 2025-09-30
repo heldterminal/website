@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { User, Settings, CreditCard, LogOut, ChevronDown } from "lucide-react";
+import { Settings, CreditCard, LogOut } from "lucide-react";
+import { Users } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   DropdownMenu,
@@ -155,16 +156,16 @@ export const ProfileMenu = ({ profile }: ProfileMenuProps) => {
         <DropdownMenuSeparator />
         
         <DropdownMenuItem asChild>
-          <Link to="/account" className="flex items-center">
-            <User className="mr-2 h-4 w-4" />
-            <span>Account</span>
-          </Link>
-        </DropdownMenuItem>
-        
-        <DropdownMenuItem asChild>
           <Link to="/settings" className="flex items-center">
             <Settings className="mr-2 h-4 w-4" />
             <span>Settings</span>
+          </Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem asChild>
+          <Link to="/team-management" className="flex items-center">
+            <Users className="mr-2 h-4 w-4" />
+            <span>Team Management</span>
           </Link>
         </DropdownMenuItem>
         

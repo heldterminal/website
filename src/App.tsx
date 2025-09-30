@@ -10,8 +10,12 @@ import Pricing from "./pages/Pricing";
 import Team from "./pages/Team";
 import Contact from "./pages/Contact";
 import Settings from "./pages/Settings";
-import Account from "./pages/Account";
 import PaymentSuccess from "./pages/PaymentSuccess";
+import TeamManagement from "./pages/TeamManagement";
+import TeamDetails from "./pages/TeamDetails";
+import TeamCreate from "./pages/TeamCreate";
+import AcceptInvite from "./pages/AcceptInvite";
+import PersonalAnalytics from "./pages/PersonalAnalytics";
 import NotFound from "./pages/NotFound";
 import Waitlist from "./pages/Waitlist";
 
@@ -29,10 +33,14 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/team" element={<Team />} />
+            <Route path="/team-management" element={<TeamManagement />} />
+            <Route path="/team-management/create" element={<TeamCreate />} />
+            <Route path="/team-management/:teamId" element={<TeamDetails />} />
+            <Route path="/accept-invite" element={<AcceptInvite />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/waitlist" element={<Waitlist />} />
             <Route path="/settings" element={<Settings />} />
-            <Route path="/account" element={<Account />} />
+            <Route path="/personal-analytics" element={<PersonalAnalytics />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

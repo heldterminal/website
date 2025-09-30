@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { User, Settings as SettingsIcon, CreditCard, CheckCircle, Crown } from "lucide-react";
+import { User, Settings as SettingsIcon, CreditCard, CheckCircle, Crown, BarChart3 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const Settings = () => {
@@ -220,8 +220,8 @@ const Settings = () => {
                 Billing
               </TabsTrigger>
               <TabsTrigger value="preferences" className="flex items-center gap-2">
-                <SettingsIcon className="h-4 w-4" />
-                Preferences
+                <BarChart3 className="h-4 w-4" />
+                Analytics
               </TabsTrigger>
             </TabsList>
 
@@ -335,9 +335,9 @@ const Settings = () => {
             <TabsContent value="preferences">
               <Card className="glass-panel">
                 <CardHeader>
-                  <CardTitle className="text-foreground">Preferences</CardTitle>
+                  <CardTitle className="text-foreground">Analytics</CardTitle>
                   <CardDescription className="text-muted-foreground">
-                    Customize your Trem experience.
+                    View your command history and usage statistics.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -345,17 +345,15 @@ const Settings = () => {
                     <div className="p-4 border border-border rounded-lg bg-background/30">
                       <h3 className="font-semibold text-foreground mb-2">Command History</h3>
                       <p className="text-sm text-muted-foreground mb-3">
-                        Automatically track and analyze your terminal commands
+                        Track and analyze your terminal commands
                       </p>
-                      <Button variant="outline" size="sm">Configure</Button>
-                    </div>
-                    
-                    <div className="p-4 border border-border rounded-lg bg-background/30">
-                      <h3 className="font-semibold text-foreground mb-2">AI Models</h3>
-                      <p className="text-sm text-muted-foreground mb-3">
-                        Choose your preferred AI model for command suggestions
-                      </p>
-                      <Button variant="outline" size="sm">Manage Models</Button>
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => navigate("/personal-analytics")}
+                      >
+                        Show
+                      </Button>
                     </div>
                   </div>
                 </CardContent>

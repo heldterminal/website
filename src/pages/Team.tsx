@@ -7,6 +7,15 @@ import TeamMissionFlow from "@/components/TeamMissionFlow";
 const Team = () => {
   const team = [
     {
+      name: "Truong Nguyen",
+      role: "Co-Founder",
+      bio: "Software Engineer at Palo Alto Networks, Prev Product Manager at Atlassian, SPL at Scale AI. Berkeley CS + Haas '25.",
+      avatar: "/truong-nguyen.jpg",
+      social: {
+        linkedin: "https://www.linkedin.com/in/truong-h-nguyen/"
+      }
+    },
+    {
       name: "Jeff Shen",
       role: "Co-Founder",
       bio: "Software Engineer at Oracle Cloud Infrastructure. Berkeley CS + DS '25. Phi Beta Kappa.",
@@ -16,12 +25,12 @@ const Team = () => {
       }
     },
     {
-      name: "Truong Nguyen",
+      name: "Morgan Fung",
       role: "Co-Founder",
-      bio: "Prev Product Manager at Atlassian, SPL at Scale AI. Berkeley CS + Haas '25.",
-      avatar: "/truong-nguyen.jpg",
+      bio: "Berkeley CS + Applied Math.",
+      avatar: "/morgan-fung.jpg",
       social: {
-        linkedin: "https://www.linkedin.com/in/truong-h-nguyen/"
+        linkedin: "https://www.linkedin.com/in/morgan-fung/"
       }
     }
   ];
@@ -56,9 +65,9 @@ const Team = () => {
 We’re UC Berkeley grads reimagining the terminal for the modern team. Coro is an AI copilot that makes command history and workflows collaborative, automated, and intelligent.              </p>
             </ScrollSection>
             
-            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch">
+            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto items-stretch">
               {team.map((member, index) => (
-                <ScrollSection key={member.name} animation={index === 0 ? "slide-left" : "slide-right"} delay={index === 0 ? 300 : 400}>
+                <ScrollSection key={member.name} animation={index === 0 ? "slide-left" : index === 1 ? "fade" : "slide-right"} delay={300 + (index * 100)}>
                   <Card className="glass-panel hover:scale-105 hover:-translate-y-2 transition-all duration-500 h-full flex flex-col">
                     <CardContent className="p-6 text-center flex flex-col h-full">
                       <div className="relative mb-4">
