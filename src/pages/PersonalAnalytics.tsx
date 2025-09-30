@@ -2,7 +2,7 @@ import { FlowNavigation } from "@/components/FlowNavigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -143,6 +143,15 @@ const PersonalAnalytics = () => {
     api_calls: "API Calls",
     storage_bytes: "Storage (bytes)",
   };
+
+  // Filter usage to last 14 days only
+  const last14DaysUsage = useMemo(() => {
+    const fourteenDaysAgo = new Date();
+    fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14);
+    const cutoffDate = fourteenDaysAgo.toISOString().split("T")[0];
+    
+    return usage.filter(row => row.day >= cutoffDate);
+  }, [usage]);
 
   const paginatedCommands = commands.slice(
     currentPage * ITEMS_PER_PAGE,
@@ -318,9 +327,9 @@ const PersonalAnalytics = () => {
                   </Select>
                 </CardHeader>
                 <CardContent>
-                  {usage.length > 0 ? (
+                  {last14DaysUsage.length > 0 ? (
                     <ChartContainer config={chartConfig} className="h-[320px] w-full">
-                      <LineChart data={usage} margin={{ left: 12, right: 12, top: 8, bottom: 8 }}>
+                      <LineChart data={last14DaysUsage} margin={{ left: 12, right: 12, top: 8, bottom: 8 }}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="day" tick={{ fontSize: 12 }} minTickGap={24} />
                         <YAxis tick={{ fontSize: 12 }} />

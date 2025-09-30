@@ -17,7 +17,8 @@ import { useAuth } from "@/hooks/useAuth";
 
 type UsageRow = {
   day: string;
-  command_count: number;
+  user_id: string;
+  token_count: number;
   api_calls: number;
   storage_bytes: number;
 };
@@ -44,6 +45,8 @@ const TeamDetails = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isRenaming, setIsRenaming] = useState(false);
   const [teamNameEdit, setTeamNameEdit] = useState<string>("");
+  const [selectedMetric, setSelectedMetric] = useState<"token_count" | "api_calls" | "storage_bytes">("token_count");
+  const [hoveredUser, setHoveredUser] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,7 +55,7 @@ const TeamDetails = () => {
       try {
         const { data: usageRows, error: usageErr } = await (supabase
           .from("team_usage_daily" as any)
-          .select("day, command_count, api_calls, storage_bytes")
+          .select("day, user_id, token_count, api_calls, storage_bytes")
           .eq("team_id", teamId)
           .order("day", { ascending: true }) as any);
         if (usageErr) throw usageErr;
@@ -96,15 +99,97 @@ const TeamDetails = () => {
     fetchData();
   }, [teamId, user?.id]);
 
-  const totalCommands = useMemo(() => usage.reduce((s, r) => s + (r.command_count || 0), 0), [usage]);
-  const totalApi = useMemo(() => usage.reduce((s, r) => s + (r.api_calls || 0), 0), [usage]);
-  const totalStorage = useMemo(() => usage.reduce((s, r) => s + (r.storage_bytes || 0), 0), [usage]);
+  // Get today's date
+  const today = useMemo(() => new Date().toISOString().split("T")[0], []);
+
+  // Filter usage for today only
+  const todayUsage = useMemo(() => usage.filter(row => row.day === today), [usage, today]);
+
+  const totalTokens = useMemo(() => todayUsage.reduce((s, r) => s + (r.token_count || 0), 0), [todayUsage]);
+  const totalApi = useMemo(() => todayUsage.reduce((s, r) => s + (r.api_calls || 0), 0), [todayUsage]);
+  const totalStorage = useMemo(() => todayUsage.reduce((s, r) => s + (r.storage_bytes || 0), 0), [todayUsage]);
+
+  // Calculate per-user totals for TODAY only
+  const userTotals = useMemo(() => {
+    const totals: Record<string, { tokens: number; api_calls: number; storage: number }> = {};
+    todayUsage.forEach((row) => {
+      if (!totals[row.user_id]) {
+        totals[row.user_id] = { tokens: 0, api_calls: 0, storage: 0 };
+      }
+      totals[row.user_id].tokens += row.token_count || 0;
+      totals[row.user_id].api_calls += row.api_calls || 0;
+      totals[row.user_id].storage += row.storage_bytes || 0;
+    });
+    return totals;
+  }, [todayUsage]);
+
+  // Organize data by day with per-user breakdown
+  const chartData = useMemo(() => {
+    const byDay: Record<string, any> = {};
+    
+    usage.forEach((row) => {
+      if (!byDay[row.day]) {
+        byDay[row.day] = { day: row.day };
+      }
+      
+      const member = members.find(m => m.user_id === row.user_id);
+      const userName = member?.full_name || member?.email?.split('@')[0] || row.user_id.slice(0, 8);
+      
+      // Create fields for each user's metrics
+      byDay[row.day][`${userName}_token_count`] = (byDay[row.day][`${userName}_token_count`] || 0) + (row.token_count || 0);
+      byDay[row.day][`${userName}_api_calls`] = (byDay[row.day][`${userName}_api_calls`] || 0) + (row.api_calls || 0);
+      byDay[row.day][`${userName}_storage_bytes`] = (byDay[row.day][`${userName}_storage_bytes`] || 0) + (row.storage_bytes || 0);
+    });
+    
+    return Object.values(byDay).sort((a: any, b: any) => a.day.localeCompare(b.day));
+  }, [usage, members]);
+
+  // Get unique user names for creating lines
+  const userNames = useMemo(() => {
+    const names = new Set<string>();
+    members.forEach(member => {
+      const userName = member.full_name || member.email?.split('@')[0] || member.user_id.slice(0, 8);
+      names.add(userName);
+    });
+    return Array.from(names);
+  }, [members]);
+
+  // Colors for different users (up to 12 distinct colors)
+  const userColors = [
+    "#3b82f6", // Blue
+    "#f97316", // Orange
+    "#10b981", // Green
+    "#8b5cf6", // Purple
+    "#ec4899", // Pink
+    "#f59e0b", // Amber
+    "#06b6d4", // Cyan
+    "#ef4444", // Red
+    "#84cc16", // Lime
+    "#f43f5e", // Rose
+    "#0ea5e9", // Sky Blue
+    "#a855f7", // Violet
+  ];
+
+  // Filter chart data to last 14 days only
+  const last14DaysChartData = useMemo(() => {
+    const fourteenDaysAgo = new Date();
+    fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14);
+    const cutoffDate = fourteenDaysAgo.toISOString().split("T")[0];
+    
+    return chartData.filter((row: any) => row.day >= cutoffDate);
+  }, [chartData]);
 
   const chartConfig = {
-    commands: { label: "Commands", color: "hsl(var(--primary))" },
-    api: { label: "API Calls", color: "hsl(var(--chart-2))" },
-    storage: { label: "Storage Bytes", color: "hsl(var(--chart-3))" },
+    token_count: { label: "Tokens", color: "#3b82f6" }, // Blue
+    api_calls: { label: "API Calls", color: "#f97316" }, // Orange
+    storage_bytes: { label: "Storage (bytes)", color: "#10b981" }, // Green
   } as const;
+
+  const metricLabels = {
+    token_count: "Tokens",
+    api_calls: "API Calls",
+    storage_bytes: "Storage (bytes)",
+  };
 
   const handleInvite = async () => {
     if (!teamId || !inviteEmail) return;
@@ -319,25 +404,115 @@ const TeamDetails = () => {
           ) : (
             <>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                <Card className="glass-panel"><CardHeader><CardTitle>Total Commands</CardTitle></CardHeader><CardContent className="text-3xl font-light">{totalCommands.toLocaleString()}</CardContent></Card>
-                <Card className="glass-panel"><CardHeader><CardTitle>Total API Calls</CardTitle></CardHeader><CardContent className="text-3xl font-light">{totalApi.toLocaleString()}</CardContent></Card>
-                <Card className="glass-panel"><CardHeader><CardTitle>Total Storage</CardTitle></CardHeader><CardContent className="text-3xl font-light">{totalStorage.toLocaleString()}</CardContent></Card>
+                <Card className="glass-panel">
+                  <CardHeader><CardTitle>Total Tokens</CardTitle></CardHeader>
+                  <CardContent>
+                    <div className="text-3xl font-light mb-3">{totalTokens.toLocaleString()}</div>
+                    <div className="space-y-1">
+                      {Object.entries(userTotals)
+                        .sort((a, b) => b[1].tokens - a[1].tokens)
+                        .map(([userId, totals]) => {
+                          const member = members.find(m => m.user_id === userId);
+                          const name = member?.full_name || member?.email?.split('@')[0] || 'User';
+                          return (
+                            <div key={userId} className="flex items-center justify-between text-xs text-muted-foreground">
+                              <span className="truncate max-w-[120px]">{name}</span>
+                              <span className="font-medium">{totals.tokens.toLocaleString()}</span>
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="glass-panel">
+                  <CardHeader><CardTitle>Total API Calls</CardTitle></CardHeader>
+                  <CardContent>
+                    <div className="text-3xl font-light mb-3">{totalApi.toLocaleString()}</div>
+                    <div className="space-y-1">
+                      {Object.entries(userTotals)
+                        .sort((a, b) => b[1].api_calls - a[1].api_calls)
+                        .map(([userId, totals]) => {
+                          const member = members.find(m => m.user_id === userId);
+                          const name = member?.full_name || member?.email?.split('@')[0] || 'User';
+                          return (
+                            <div key={userId} className="flex items-center justify-between text-xs text-muted-foreground">
+                              <span className="truncate max-w-[120px]">{name}</span>
+                              <span className="font-medium">{totals.api_calls.toLocaleString()}</span>
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="glass-panel">
+                  <CardHeader><CardTitle>Total Storage</CardTitle></CardHeader>
+                  <CardContent>
+                    <div className="text-3xl font-light mb-3">{totalStorage.toLocaleString()}</div>
+                    <div className="space-y-1">
+                      {Object.entries(userTotals)
+                        .sort((a, b) => b[1].storage - a[1].storage)
+                        .map(([userId, totals]) => {
+                          const member = members.find(m => m.user_id === userId);
+                          const name = member?.full_name || member?.email?.split('@')[0] || 'User';
+                          return (
+                            <div key={userId} className="flex items-center justify-between text-xs text-muted-foreground">
+                              <span className="truncate max-w-[120px]">{name}</span>
+                              <span className="font-medium">{totals.storage.toLocaleString()}</span>
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
 
               <Card className="glass-panel mb-10">
-                <CardHeader>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
                   <CardTitle>Daily Usage</CardTitle>
+                  <Select value={selectedMetric} onValueChange={(value: any) => setSelectedMetric(value)}>
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="token_count">Tokens</SelectItem>
+                      <SelectItem value="api_calls">API Calls</SelectItem>
+                      <SelectItem value="storage_bytes">Storage (bytes)</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </CardHeader>
                 <CardContent>
                   <ChartContainer config={chartConfig} className="h-[320px] w-full">
-                    <LineChart data={usage} margin={{ left: 12, right: 12, top: 8, bottom: 8 }}>
+                    <LineChart 
+                      data={last14DaysChartData} 
+                      margin={{ left: 12, right: 12, top: 8, bottom: 8 }}
+                      onMouseLeave={() => setHoveredUser(null)}
+                    >
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="day" tick={{ fontSize: 12 }} minTickGap={24} />
                       <YAxis tick={{ fontSize: 12 }} />
                       <ChartTooltip content={<ChartTooltipContent />} />
-                      <Line type="monotone" dataKey="command_count" name="Commands" stroke="var(--color-commands)" dot={false} strokeWidth={2} />
-                      <Line type="monotone" dataKey="api_calls" name="API Calls" stroke="var(--color-api)" dot={false} strokeWidth={2} />
-                      <Line type="monotone" dataKey="storage_bytes" name="Storage" stroke="var(--color-storage)" dot={false} strokeWidth={2} />
+                      {userNames.map((userName, idx) => {
+                        const dataKey = `${userName}_${selectedMetric}`;
+                        const isHovered = hoveredUser === userName;
+                        const isDimmed = hoveredUser && hoveredUser !== userName;
+                        
+                        return (
+                          <Line
+                            key={userName}
+                            type="monotone"
+                            dataKey={dataKey}
+                            name={userName}
+                            stroke={userColors[idx % userColors.length]}
+                            strokeWidth={isHovered ? 3 : 2}
+                            strokeOpacity={isDimmed ? 0.2 : 1}
+                            dot={true}
+                            activeDot={{ r: 6 }}
+                            onMouseEnter={() => setHoveredUser(userName)}
+                          />
+                        );
+                      })}
                       <ChartLegend content={<ChartLegendContent />} />
                     </LineChart>
                   </ChartContainer>
