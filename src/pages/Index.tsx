@@ -1,28 +1,124 @@
 import { FlowNavigation } from "@/components/FlowNavigation";
 import { HeroSection } from "@/components/HeroSection";
-import { FeaturesSection } from "@/components/FeaturesSection";
 import { ContactSection } from "@/components/ContactSection";
 import TerminalBackground from "@/components/TerminalBackground";
 import { FaqSection } from "@/components/FaqSection";
+import LiquidEther from "@/components/LiquidEther";
+import ScrollStack, { ScrollStackItem } from "@/components/ScrollStack";
+import { Brain, Users, Zap } from "lucide-react";
 
 const Index = () => {
   return (
-    <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: "hsl(var(--background))" }}>
+    <div className="min-h-screen relative overflow-x-hidden" style={{ backgroundColor: "hsl(var(--background))" }}>
+      {/* Liquid Ether Background - Fixed, full page, behind everything */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <LiquidEther
+          colors={['#0EA5E9', '#3B82F6', '#60A5FA']}
+          mouseForce={20}
+          cursorSize={100}
+          isViscous={false}
+          viscous={30}
+          iterationsViscous={32}
+          iterationsPoisson={32}
+          resolution={0.5}
+          isBounce={false}
+          autoDemo={true}
+          autoSpeed={0.34}
+          autoIntensity={2.2}
+          takeoverDuration={0.25}
+          autoResumeDelay={100}
+          autoRampDuration={0.2}
+        />
+      </div>
+      
       <TerminalBackground />
       <FlowNavigation />
       
-      {/* Floating background elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 left-10 w-2 h-2 rounded-full bg-blue-500/20 animate-pulse"></div>
-        <div className="absolute top-40 right-20 w-1 h-1 rounded-full bg-purple-500/30 animate-bounce"></div>
-        <div className="absolute bottom-40 left-1/4 w-3 h-3 rounded-full bg-green-500/10 animate-ping"></div>
-        <div className="absolute top-1/3 right-1/3 w-1.5 h-1.5 rounded-full bg-yellow-500/25 animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-2 h-2 rounded-full bg-red-500/15 animate-bounce"></div>
-      </div>
       
-      <main>
+      <main className="relative z-10">
         <HeroSection />
-        <FeaturesSection />
+        
+        {/* ScrollStack Features Section - No gap, seamless transition */}
+        <section className="relative h-[270vh] -mt-1 bg-transparent">
+          <div className="max-w-4xl mx-auto px-4">
+            <ScrollStack 
+              useWindowScroll={true}
+              itemDistance={400}
+              itemStackDistance={20}
+              stackPosition="25%"
+              scaleEndPosition="20%"
+              baseScale={0.95}
+              itemScale={0.02}
+            >
+            <ScrollStackItem itemClassName="glass-panel border border-white/10 bg-gradient-to-br from-background/80 to-muted/40 backdrop-blur-md">
+              <div className="group h-full flex flex-col">
+                <div className="space-y-6 flex-1">
+                  <div
+                    className="w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300"
+                    style={{ backgroundColor: "hsl(var(--primary) / 0.15)" }}
+                  >
+                    <Brain className="w-8 h-8" style={{ color: "hsl(var(--primary))" }} />
+                  </div>
+                  <h3 className="text-4xl font-medium" style={{ color: "hsl(var(--foreground))", fontWeight: 600 }}>
+                    Intelligent Recall
+                  </h3>
+                  <p
+                    className="leading-relaxed text-2xl"
+                    style={{ color: "hsl(var(--muted-foreground))", lineHeight: 1.7, fontWeight: 300 }}
+                  >
+                    Find any command you or your team has run — parameterized, deduplicated, and ranked by context.
+                  </p>
+                </div>
+              </div>
+            </ScrollStackItem>
+
+            <ScrollStackItem itemClassName="glass-panel border border-white/10 bg-gradient-to-br from-background/80 to-muted/40 backdrop-blur-md">
+              <div className="group h-full flex flex-col">
+                <div className="space-y-6 flex-1">
+                  <div
+                    className="w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300"
+                    style={{ backgroundColor: "hsl(var(--primary) / 0.15)" }}
+                  >
+                    <Users className="w-8 h-8" style={{ color: "hsl(var(--primary))" }} />
+                  </div>
+                  <h3 className="text-4xl font-medium" style={{ color: "hsl(var(--foreground))", fontWeight: 600 }}>
+                    Shared Team Knowledge
+                  </h3>
+                  <p
+                    className="leading-relaxed text-2xl"
+                    style={{ color: "hsl(var(--muted-foreground))", lineHeight: 1.7, fontWeight: 300 }}
+                  >
+                    Every executed command becomes reusable knowledge with ownership, permissions, and provenance.
+                  </p>
+                </div>
+              </div>
+            </ScrollStackItem>
+
+            <ScrollStackItem itemClassName="glass-panel border border-white/10 bg-gradient-to-br from-background/80 to-muted/40 backdrop-blur-md">
+              <div className="group h-full flex flex-col">
+                <div className="space-y-6 flex-1">
+                  <div
+                    className="w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300"
+                    style={{ backgroundColor: "hsl(var(--primary) / 0.15)" }}
+                  >
+                    <Zap className="w-8 h-8" style={{ color: "hsl(var(--primary))" }} />
+                  </div>
+                  <h3 className="text-4xl font-medium" style={{ color: "hsl(var(--foreground))", fontWeight: 600 }}>
+                    Runbookless Ops
+                  </h3>
+                  <p
+                    className="leading-relaxed text-2xl"
+                    style={{ color: "hsl(var(--muted-foreground))", lineHeight: 1.7, fontWeight: 300 }}
+                  >
+                    Skip wikis and runbooks. Execute vetted, shareable commands inline with guardrails.
+                  </p>
+                </div>
+              </div>
+            </ScrollStackItem>
+            </ScrollStack>
+          </div>
+        </section>
+        
         <ContactSection />
         <FaqSection />
       </main>

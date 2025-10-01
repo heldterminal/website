@@ -39,10 +39,10 @@ export const HeroSection = () => {
   };
 
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative overflow-hidden bg-transparent">
       <div className="absolute inset-0 hero-grid opacity-30"></div>
       <div className="absolute inset-0 hero-glow"></div>
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/10"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-transparent"></div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-screen py-20 pt-16">
