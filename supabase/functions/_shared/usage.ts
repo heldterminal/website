@@ -47,6 +47,50 @@ export function calculateTokenCount(queryString: string): number {
 }
 
 /**
+ * Get user's timezone from profile.
+ */
+async function getUserTimezone(supabase: any, userId: string): Promise<string> {
+  try {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("timezone")
+      .eq("user_id", userId)
+      .single();
+    
+    if (error || !data?.timezone) {
+      return "UTC"; // Default to UTC if not set
+    }
+    
+    return data.timezone;
+  } catch (e) {
+    console.error("Error fetching user timezone:", e);
+    return "UTC";
+  }
+}
+
+/**
+ * Get the current date in the user's local timezone.
+ * Returns YYYY-MM-DD format.
+ */
+function getLocalDay(timezone: string): string {
+  try {
+    const now = new Date();
+    // Format date in user's timezone
+    const formatter = new Intl.DateTimeFormat('en-CA', {
+      timeZone: timezone,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    });
+    return formatter.format(now); // Returns YYYY-MM-DD
+  } catch (e) {
+    console.error("Error formatting date for timezone:", timezone, e);
+    // Fallback to UTC
+    return new Date().toISOString().split("T")[0];
+  }
+}
+
+/**
  * Check if team has exceeded any quotas.
  * Returns error message if quota exceeded, null otherwise.
  */
@@ -57,7 +101,9 @@ export async function checkQuotas(
   newTokenCount: number
 ): Promise<string | null> {
   try {
-    const today = new Date().toISOString().split("T")[0];
+    // Get user's timezone and calculate local day
+    const timezone = await getUserTimezone(supabase, userId);
+    const today = getLocalDay(timezone);
 
     // Get team quotas
     const { data: quotaData, error: quotaError } = await supabase
@@ -138,7 +184,9 @@ export async function trackUsage(
   tokenCount: number
 ) {
   try {
-    const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD format
+    // Get user's timezone and calculate local day
+    const timezone = await getUserTimezone(supabase, userId);
+    const today = getLocalDay(timezone);
 
     // Use upsert to increment existing row or create new one
     const { data: existing } = await supabase

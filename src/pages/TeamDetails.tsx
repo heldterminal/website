@@ -99,8 +99,8 @@ const TeamDetails = () => {
     fetchData();
   }, [teamId, user?.id]);
 
-  // Get today's date
-  const today = useMemo(() => new Date().toISOString().split("T")[0], []);
+  // Get today's date in user's local timezone (data is now stored in local timezone)
+  const today = useMemo(() => new Date().toLocaleDateString('en-CA'), []); // YYYY-MM-DD
 
   // Filter usage for today only
   const todayUsage = useMemo(() => usage.filter(row => row.day === today), [usage, today]);
@@ -174,7 +174,7 @@ const TeamDetails = () => {
   const last14DaysChartData = useMemo(() => {
     const fourteenDaysAgo = new Date();
     fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14);
-    const cutoffDate = fourteenDaysAgo.toISOString().split("T")[0];
+    const cutoffDate = fourteenDaysAgo.toLocaleDateString('en-CA');
     
     return chartData.filter((row: any) => row.day >= cutoffDate);
   }, [chartData]);

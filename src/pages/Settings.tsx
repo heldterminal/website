@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { User, Settings as SettingsIcon, CreditCard, CheckCircle, Crown, BarChart3 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +20,8 @@ const Settings = () => {
   const [profileData, setProfileData] = useState({
     full_name: "",
     email: "",
-    github_username: ""
+    github_username: "",
+    timezone: ""
   });
   const navigate = useNavigate();
 
@@ -50,20 +52,23 @@ const Settings = () => {
         setProfileData({
           full_name: "",
           email: user?.email || "",
-          github_username: ""
+          github_username: "",
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
         });
       } else if (data) {
         setProfileData({
           full_name: data.full_name || "",
           email: data.email || user?.email || "",
-          github_username: data.github_username || ""
+          github_username: data.github_username || "",
+          timezone: (data as any).timezone || Intl.DateTimeFormat().resolvedOptions().timeZone
         });
       } else {
         // No profile found, set default values
         setProfileData({
           full_name: "",
           email: user?.email || "",
-          github_username: ""
+          github_username: "",
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
         });
       }
     } catch (error) {
@@ -72,7 +77,8 @@ const Settings = () => {
       setProfileData({
         full_name: "",
         email: user?.email || "",
-        github_username: ""
+        github_username: "",
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
       });
     }
   };
@@ -101,8 +107,9 @@ const Settings = () => {
           .update({
             full_name: profileData.full_name,
             email: profileData.email,
-            github_username: profileData.github_username
-          })
+            github_username: profileData.github_username,
+            timezone: profileData.timezone
+          } as any)
           .eq("user_id", user.id);
       } else {
         // Insert new profile
@@ -112,8 +119,9 @@ const Settings = () => {
             user_id: user.id,
             full_name: profileData.full_name,
             email: profileData.email,
-            github_username: profileData.github_username
-          });
+            github_username: profileData.github_username,
+            timezone: profileData.timezone
+          } as any);
       }
 
       if (result.error) throw result.error;
@@ -265,6 +273,38 @@ const Settings = () => {
                       placeholder="Optional"
                       className="bg-background/50 border-border"
                     />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="timezone" className="text-foreground">Timezone</Label>
+                    <Select 
+                      value={profileData.timezone} 
+                      onValueChange={(value) => setProfileData(prev => ({ ...prev, timezone: value }))}
+                    >
+                      <SelectTrigger className="bg-background/50 border-border">
+                        <SelectValue placeholder="Select timezone" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="America/New_York">Eastern Time (ET)</SelectItem>
+                        <SelectItem value="America/Chicago">Central Time (CT)</SelectItem>
+                        <SelectItem value="America/Denver">Mountain Time (MT)</SelectItem>
+                        <SelectItem value="America/Los_Angeles">Pacific Time (PT)</SelectItem>
+                        <SelectItem value="America/Anchorage">Alaska Time (AKT)</SelectItem>
+                        <SelectItem value="Pacific/Honolulu">Hawaii Time (HT)</SelectItem>
+                        <SelectItem value="Europe/London">London (GMT/BST)</SelectItem>
+                        <SelectItem value="Europe/Paris">Paris (CET/CEST)</SelectItem>
+                        <SelectItem value="Europe/Berlin">Berlin (CET/CEST)</SelectItem>
+                        <SelectItem value="Asia/Tokyo">Tokyo (JST)</SelectItem>
+                        <SelectItem value="Asia/Shanghai">Shanghai (CST)</SelectItem>
+                        <SelectItem value="Asia/Singapore">Singapore (SGT)</SelectItem>
+                        <SelectItem value="Asia/Dubai">Dubai (GST)</SelectItem>
+                        <SelectItem value="Australia/Sydney">Sydney (AEDT/AEST)</SelectItem>
+                        <SelectItem value="UTC">UTC</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Current: {profileData.timezone || "Not set"}
+                    </p>
                   </div>
 
                   <Button onClick={updateProfile} disabled={loadingState}>

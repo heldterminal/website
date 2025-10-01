@@ -64,7 +64,6 @@ const PersonalAnalytics = () => {
         }
 
         const defaultTeamId = profileData?.default_team_id;
-        console.log("Fetching analytics for:", { userId: user.id, defaultTeamId });
 
         // Fetch usage data for this user from team_usage_daily
         let usageRows = [];
@@ -79,7 +78,6 @@ const PersonalAnalytics = () => {
           if (usageErr) {
             console.error("Usage fetch error:", usageErr);
           } else {
-            console.log("Usage data fetched:", data);
             usageRows = data || [];
           }
         }
@@ -97,27 +95,7 @@ const PersonalAnalytics = () => {
 
         setUsage(usageRows || []);
         setCommands(commandRows || []);
-
-        // Calculate today's usage
-        const today = new Date().toISOString().split("T")[0];
-        console.log("Today's date:", today);
-        const todayData = (usageRows || []).find((r) => r.day === today);
-        console.log("Today's usage data:", todayData);
-        
-        if (todayData) {
-          setTodayUsage({
-            api_calls: todayData.api_calls || 0,
-            token_count: todayData.token_count || 0,
-            storage_bytes: todayData.storage_bytes || 0,
-          });
-        } else {
-          // Reset to 0 if no data for today
-          setTodayUsage({
-            api_calls: 0,
-            token_count: 0,
-            storage_bytes: 0,
-          });
-        }
+        // Today's usage is now calculated in useMemo based on local timezone
       } catch (e: any) {
         console.error("Fetch error:", e);
         toast({
@@ -132,6 +110,9 @@ const PersonalAnalytics = () => {
     fetchData();
   }, [user?.id]);
 
+  // Get today in user's local timezone (data is now stored in local timezone)
+  const today = useMemo(() => new Date().toLocaleDateString('en-CA'), []); // YYYY-MM-DD
+
   const chartConfig = {
     token_count: { label: "Tokens", color: "#3b82f6" }, // Blue
     api_calls: { label: "API Calls", color: "#f97316" }, // Orange
@@ -144,11 +125,29 @@ const PersonalAnalytics = () => {
     storage_bytes: "Storage (bytes)",
   };
 
+  // Calculate today's usage (data already in local timezone)
+  const todayUsageData = useMemo(() => {
+    return usage.filter(row => row.day === today);
+  }, [usage, today]);
+
+  // Recalculate today's totals
+  useMemo(() => {
+    const total = todayUsageData.reduce(
+      (acc, row) => ({
+        api_calls: acc.api_calls + (row.api_calls || 0),
+        token_count: acc.token_count + (row.token_count || 0),
+        storage_bytes: acc.storage_bytes + (row.storage_bytes || 0),
+      }),
+      { api_calls: 0, token_count: 0, storage_bytes: 0 }
+    );
+    setTodayUsage(total);
+  }, [todayUsageData]);
+
   // Filter usage to last 14 days only
   const last14DaysUsage = useMemo(() => {
     const fourteenDaysAgo = new Date();
     fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14);
-    const cutoffDate = fourteenDaysAgo.toISOString().split("T")[0];
+    const cutoffDate = fourteenDaysAgo.toLocaleDateString('en-CA');
     
     return usage.filter(row => row.day >= cutoffDate);
   }, [usage]);

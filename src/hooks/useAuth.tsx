@@ -41,6 +41,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
       
       if (data) {
+        // Auto-detect and update user's timezone on every login
+        // This handles cases where user moves to a different timezone
+        try {
+          const detectedTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+          const currentTimezone = (data as any).timezone;
+          
+          // Only update if timezone changed (avoid unnecessary DB writes)
+          if (currentTimezone !== detectedTimezone) {
+            await supabase
+              .from('profiles')
+              .update({ timezone: detectedTimezone } as any)
+              .eq('user_id', userId);
+            console.log('Updated user timezone from', currentTimezone, 'to', detectedTimezone);
+          }
+        } catch (tzError) {
+          console.error('Error updating timezone:', tzError);
+        }
+        
         // Map subscription_status to plan for simplicity
         const plan = (data as any).subscription_status === 'active' ? 'pro' : 'free';
         setProfile({
