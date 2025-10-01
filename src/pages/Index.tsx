@@ -39,11 +39,11 @@ const Index = () => {
         <HeroSection />
         
         {/* ScrollStack Features Section - No gap, seamless transition */}
-        <section className="relative h-[270vh] -mt-1 bg-transparent">
-          <div className="max-w-4xl mx-auto px-4">
+        <section className="relative h-[220vh] -mt-1 bg-transparent">
+          <div className="max-w-3xl mx-auto px-4">
             <ScrollStack 
               useWindowScroll={true}
-              itemDistance={400}
+              itemDistance={325}
               itemStackDistance={20}
               stackPosition="25%"
               scaleEndPosition="20%"
@@ -59,11 +59,11 @@ const Index = () => {
                   >
                     <Brain className="w-8 h-8" style={{ color: "hsl(var(--primary))" }} />
                   </div>
-                  <h3 className="text-4xl font-medium" style={{ color: "hsl(var(--foreground))", fontWeight: 600 }}>
+                  <h3 className="text-3xl font-medium" style={{ color: "hsl(var(--foreground))", fontWeight: 600 }}>
                     Intelligent Recall
                   </h3>
                   <p
-                    className="leading-relaxed text-2xl"
+                    className="leading-relaxed text-lg"
                     style={{ color: "hsl(var(--muted-foreground))", lineHeight: 1.7, fontWeight: 300 }}
                   >
                     Find any command you or your team has run — parameterized, deduplicated, and ranked by context.
@@ -81,11 +81,11 @@ const Index = () => {
                   >
                     <Users className="w-8 h-8" style={{ color: "hsl(var(--primary))" }} />
                   </div>
-                  <h3 className="text-4xl font-medium" style={{ color: "hsl(var(--foreground))", fontWeight: 600 }}>
+                  <h3 className="text-3xl font-medium" style={{ color: "hsl(var(--foreground))", fontWeight: 600 }}>
                     Shared Team Knowledge
                   </h3>
                   <p
-                    className="leading-relaxed text-2xl"
+                    className="leading-relaxed text-lg"
                     style={{ color: "hsl(var(--muted-foreground))", lineHeight: 1.7, fontWeight: 300 }}
                   >
                     Every executed command becomes reusable knowledge with ownership, permissions, and provenance.
@@ -103,11 +103,11 @@ const Index = () => {
                   >
                     <Zap className="w-8 h-8" style={{ color: "hsl(var(--primary))" }} />
                   </div>
-                  <h3 className="text-4xl font-medium" style={{ color: "hsl(var(--foreground))", fontWeight: 600 }}>
+                  <h3 className="text-3xl font-medium" style={{ color: "hsl(var(--foreground))", fontWeight: 600 }}>
                     Runbookless Ops
                   </h3>
                   <p
-                    className="leading-relaxed text-2xl"
+                    className="leading-relaxed text-lg"
                     style={{ color: "hsl(var(--muted-foreground))", lineHeight: 1.7, fontWeight: 300 }}
                   >
                     Skip wikis and runbooks. Execute vetted, shareable commands inline with guardrails.
