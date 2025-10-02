@@ -75,7 +75,7 @@ const Waitlist = () => {
                     id="fullName"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    placeholder="Ada Lovelace"
+                    placeholder="Name"
                     className="mt-2"
                   />
                 </div>
