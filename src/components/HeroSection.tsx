@@ -78,7 +78,7 @@ export const HeroSection = () => {
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-800 mt-8">
               {user ? (
-                <Link to="/settings">
+                <Link to="/personal-analytics">
                   <Button
                     size="lg"
                     className="px-8 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105 transform hover:-translate-y-1"

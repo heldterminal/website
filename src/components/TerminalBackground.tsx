@@ -6,7 +6,7 @@ const TerminalBackground = () => {
 
   const commands = useMemo(
     () => [
-              "coroctl start logging",
+              "coro start",
         "coro search 'docker setup'",
         "coro recall 'kubernetes deploy'",
         "coro share --team 'build process'",
