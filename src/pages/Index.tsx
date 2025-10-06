@@ -39,14 +39,14 @@ const Index = () => {
         <HeroSection />
         
         {/* ScrollStack Features Section - No gap, seamless transition */}
-        <section className="relative h-[220vh] -mt-1 bg-transparent">
+        <section className="relative h-[280vh] -mt-1 bg-transparent">
           <div className="max-w-3xl mx-auto px-4">
             <ScrollStack 
               useWindowScroll={true}
-              itemDistance={325}
-              itemStackDistance={20}
-              stackPosition="25%"
-              scaleEndPosition="20%"
+              itemDistance={400}
+              itemStackDistance={30}
+              stackPosition="30%"
+              scaleEndPosition="25%"
               baseScale={0.95}
               itemScale={0.02}
             >
@@ -118,6 +118,9 @@ const Index = () => {
             </ScrollStack>
           </div>
         </section>
+        
+        {/* Buffer space to prevent overlap */}
+        <div className="h-32"></div>
         
         <ContactSection />
         <FaqSection />
