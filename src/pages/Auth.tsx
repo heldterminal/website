@@ -267,10 +267,10 @@ const Auth = () => {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-                  <div className="flex items-center justify-center mb-8 space-x-3">
-            <img src="/held_icon_white.png" alt="Held" className="h-14 w-14" />
-            <img src="/held_text_white.png" alt="Held" className="h-9" />
-          </div>
+        <div className="flex items-center justify-center mb-8 gap-2">
+          <img src="/held_icon_white.png" alt="Held" className="h-10 w-10" />
+          <span className="text-4xl font-semibold text-foreground">Held</span>
+        </div>
         <Card className="glass-panel">
           <CardHeader className="text-center">
             <CardTitle className="text-foreground">Welcome to Held</CardTitle>
