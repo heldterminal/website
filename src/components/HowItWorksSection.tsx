@@ -38,53 +38,6 @@ const steps = [
 
 export const HowItWorksSection = () => {
   const [activeStep, setActiveStep] = useState<number | null>(null);
-  const [typedText, setTypedText] = useState("");
-  const [showResult, setShowResult] = useState(false);
-
-  const handleStepHover = (stepNumber: number) => {
-    setActiveStep(stepNumber);
-    setTypedText("");
-    setShowResult(false);
-    
-    const step = steps.find(s => s.number === stepNumber);
-    if (!step) return;
-    
-    if (stepNumber === 1) {
-      // Typing animation for step 1
-      const text = step.demo.typing;
-      let i = 0;
-      const typeInterval = setInterval(() => {
-        if (i < text.length) {
-          setTypedText(text.slice(0, i + 1));
-          i++;
-        } else {
-          clearInterval(typeInterval);
-          setTimeout(() => setShowResult(true), 200);
-        }
-      }, 50);
-    } else if (stepNumber === 2) {
-      // Query animation for step 2
-      const text = step.demo.query;
-      let i = 0;
-      const typeInterval = setInterval(() => {
-        if (i < text.length) {
-          setTypedText(text.slice(0, i + 1));
-          i++;
-        } else {
-          clearInterval(typeInterval);
-          setTimeout(() => setShowResult(true), 300);
-        }
-      }, 40);
-    } else if (stepNumber === 3) {
-      setTimeout(() => setShowResult(true), 200);
-    }
-  };
-
-  const handleStepLeave = () => {
-    setActiveStep(null);
-    setTypedText("");
-    setShowResult(false);
-  };
 
   return (
     <section 
@@ -110,17 +63,15 @@ export const HowItWorksSection = () => {
               <div
                 key={step.number}
                 className="relative group cursor-pointer"
-                onMouseEnter={() => handleStepHover(step.number)}
-                onMouseLeave={handleStepLeave}
+                onMouseEnter={() => setActiveStep(step.number)}
+                onMouseLeave={() => setActiveStep(null)}
               >
                 {/* Card */}
                 <div 
                   className="relative p-8 rounded-2xl transition-all duration-500 h-full"
                   style={{ 
                     backgroundColor: isActive ? "hsl(0 0% 10%)" : "hsl(0 0% 6%)",
-                    border: isActive ? "1px solid hsl(0 0% 20%)" : "1px solid hsl(0 0% 12%)",
-                    transform: isActive ? "translateY(-8px)" : "translateY(0)",
-                    boxShadow: isActive ? "0 20px 40px -20px rgba(0,0,0,0.8)" : "none"
+                    border: isActive ? "1px solid hsl(0 0% 20%)" : "1px solid hsl(0 0% 12%)"
                   }}
                 >
                   {/* Icon with number badge */}
@@ -182,8 +133,7 @@ export const HowItWorksSection = () => {
                     style={{ 
                       backgroundColor: "hsl(0 0% 5%)",
                       border: "1px solid hsl(0 0% 15%)",
-                      height: isActive ? "auto" : "60px",
-                      opacity: 1
+                      minHeight: "72px"
                     }}
                   >
                     {step.number === 1 && (
@@ -191,27 +141,17 @@ export const HowItWorksSection = () => {
                         <div>
                           <span style={{ color: "hsl(0 0% 95%)" }}>user@macbook</span>
                           <span style={{ color: "hsl(0 0% 50%)" }}> ~ % </span>
-                          <span style={{ color: "hsl(0 0% 80%)" }}>
-                            {isActive ? typedText : step.demo.typing}
-                          </span>
-                          {isActive && !showResult && (
-                            <span 
-                              className="inline-block w-1.5 h-3 ml-0.5 animate-pulse"
-                              style={{ backgroundColor: "hsl(0 0% 70%)" }}
-                            />
-                          )}
+                          <span style={{ color: "hsl(0 0% 80%)" }}>{step.demo.typing}</span>
                         </div>
-                        {(showResult || !isActive) && (
-                          <div 
-                            className="transition-opacity duration-300"
-                            style={{ 
-                              color: "hsl(50 12% 50%)",
-                              opacity: isActive ? 1 : 0.5
-                            }}
-                          >
-                            {step.demo.after}
-                          </div>
-                        )}
+                        <div 
+                          className="transition-opacity duration-300"
+                          style={{ 
+                            color: "hsl(50 12% 50%)",
+                            opacity: isActive ? 1 : 0.5
+                          }}
+                        >
+                          {step.demo.after}
+                        </div>
                       </div>
                     )}
                     
@@ -222,26 +162,16 @@ export const HowItWorksSection = () => {
                           style={{ backgroundColor: "hsl(0 0% 10%)" }}
                         >
                           <span style={{ color: "hsl(0 0% 50%)" }}>"</span>
-                          <span style={{ color: "hsl(0 0% 80%)" }}>
-                            {isActive ? typedText : step.demo.query}
-                          </span>
+                          <span style={{ color: "hsl(0 0% 80%)" }}>{step.demo.query}</span>
                           <span style={{ color: "hsl(0 0% 50%)" }}>"</span>
-                          {isActive && !showResult && (
-                            <span 
-                              className="inline-block w-1.5 h-3 ml-0.5 animate-pulse"
-                              style={{ backgroundColor: "hsl(0 0% 70%)" }}
-                            />
-                          )}
                         </div>
-                        {(showResult || !isActive) && (
-                          <div 
-                            className="flex items-center gap-2 transition-opacity duration-300"
-                            style={{ opacity: isActive ? 1 : 0.5 }}
-                          >
-                            <span style={{ color: "hsl(120 40% 50%)" }}>→</span>
-                            <code style={{ color: "hsl(0 0% 80%)" }}>{step.demo.result}</code>
-                          </div>
-                        )}
+                        <div 
+                          className="flex items-center gap-2 transition-opacity duration-300"
+                          style={{ opacity: isActive ? 1 : 0.5 }}
+                        >
+                          <span style={{ color: "hsl(120 40% 50%)" }}>→</span>
+                          <code style={{ color: "hsl(0 0% 80%)" }}>{step.demo.result}</code>
+                        </div>
                       </div>
                     )}
                     
@@ -249,33 +179,26 @@ export const HowItWorksSection = () => {
                       <div className="space-y-2">
                         <div 
                           className="flex items-center gap-2 transition-opacity duration-300"
-                          style={{ 
-                            color: "hsl(50 12% 50%)",
-                            opacity: (showResult || !isActive) ? 1 : 0.3
-                          }}
+                          style={{ color: "hsl(50 12% 50%)" }}
                         >
                           <span>✓</span>
                           <span>{step.demo.shared}</span>
                         </div>
-                        {(showResult || !isActive) && (
-                          <div className="flex items-center gap-1.5 transition-opacity duration-300">
-                            {step.demo.members.map((member, i) => (
-                              <div
-                                key={i}
-                                className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-medium transition-all duration-300"
-                                style={{ 
-                                  backgroundColor: "hsl(50 12% 32%)",
-                                  color: "hsl(0 0% 95%)",
-                                  opacity: isActive ? 1 : 0.5,
-                                  transform: isActive ? `translateX(${i * -4}px)` : "translateX(0)",
-                                  animationDelay: `${i * 100}ms`
-                                }}
-                              >
-                                {member}
-                              </div>
-                            ))}
-                          </div>
-                        )}
+                        <div className="flex items-center gap-1.5 transition-opacity duration-300">
+                          {step.demo.members.map((member, i) => (
+                            <div
+                              key={i}
+                              className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-medium transition-all duration-300"
+                              style={{ 
+                                backgroundColor: "hsl(50 12% 32%)",
+                                color: "hsl(0 0% 95%)",
+                                opacity: isActive ? 1 : 0.5
+                              }}
+                            >
+                              {member}
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     )}
                   </div>
@@ -284,8 +207,11 @@ export const HowItWorksSection = () => {
                 {/* Connector line (between cards) */}
                 {step.number < 3 && (
                   <div 
-                    className="hidden md:block absolute top-1/3 -right-4 w-8 h-px"
-                    style={{ backgroundColor: "hsl(0 0% 15%)" }}
+                    className="hidden md:block absolute top-1/2 -translate-y-1/2 w-8 h-px"
+                    style={{ 
+                      backgroundColor: "hsl(0 0% 15%)",
+                      left: "100%"
+                    }}
                   />
                 )}
               </div>
