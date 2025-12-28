@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Terminal, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { Link, useNavigate, useLocation } from "react-router-dom";
@@ -56,9 +56,9 @@ export const FlowNavigation = () => {
         <div className="relative flex items-center justify-between h-16">
           {/* Left: Logo + Left Nav */}
           <div className="flex items-center space-x-8">
-            <Link to="/" className="flex items-center space-x-2">
-              <Terminal className="h-8 w-8 text-primary" />
-              <span className="text-xl font-bold text-foreground">Held</span>
+            <Link to="/" className="flex items-center gap-1">
+              <img src="/held_icon_white.png" alt="Held" className="h-7 w-7" />
+              <span className="text-2xl font-semibold text-foreground">Held</span>
             </Link>
 
             {/* Desktop Nav (Pricing, Our Team) */}

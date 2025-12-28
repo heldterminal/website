@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Terminal, Github, Mail } from "lucide-react";
+import { Github, Mail } from "lucide-react";
 
 type CheckResp = { confirmed: boolean; providers?: string[] };
 
@@ -267,9 +267,9 @@ const Auth = () => {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-                  <div className="flex items-center justify-center mb-8">
-            <Terminal className="h-8 w-8 mr-2 text-primary" />
-            <h1 className="text-2xl font-bold text-foreground">Held</h1>
+                  <div className="flex items-center justify-center mb-8 space-x-3">
+            <img src="/held_icon_white.png" alt="Held" className="h-14 w-14" />
+            <img src="/held_text_white.png" alt="Held" className="h-9" />
           </div>
         <Card className="glass-panel">
           <CardHeader className="text-center">
