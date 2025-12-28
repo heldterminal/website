@@ -3,34 +3,12 @@ import { HeroSection } from "@/components/HeroSection";
 import { ContactSection } from "@/components/ContactSection";
 import TerminalBackground from "@/components/TerminalBackground";
 import { FaqSection } from "@/components/FaqSection";
-import LiquidEther from "@/components/LiquidEther";
 import ScrollStack, { ScrollStackItem } from "@/components/ScrollStack";
 import { Brain, Users, Zap } from "lucide-react";
 
 const Index = () => {
   return (
     <div className="min-h-screen relative overflow-x-hidden" style={{ backgroundColor: "hsl(var(--background))" }}>
-      {/* Liquid Ether Background - Fixed, full page, behind everything */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <LiquidEther
-          colors={['#0EA5E9', '#3B82F6', '#60A5FA']}
-          mouseForce={20}
-          cursorSize={100}
-          isViscous={false}
-          viscous={30}
-          iterationsViscous={32}
-          iterationsPoisson={32}
-          resolution={0.5}
-          isBounce={false}
-          autoDemo={true}
-          autoSpeed={0.34}
-          autoIntensity={2.2}
-          takeoverDuration={0.25}
-          autoResumeDelay={100}
-          autoRampDuration={0.2}
-        />
-      </div>
-      
       <TerminalBackground />
       <FlowNavigation />
       

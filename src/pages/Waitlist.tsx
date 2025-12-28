@@ -63,9 +63,9 @@ const Waitlist = () => {
           <div className="absolute inset-0 depth-gradient" />
           <div className="relative z-10 max-w-3xl mx-auto">
             <div className="glass-panel p-10">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">Join the Coro Waitlist</h1>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">Join the Held Waitlist</h1>
               <p className="text-foreground/70 mb-10">
-                Be the first to try Coro. Tell us a bit about you and your use case.
+                Be the first to try Held. Tell us a bit about you and your use case.
               </p>
 
               <form onSubmit={submitWaitlist} className="grid gap-6 md:grid-cols-2">

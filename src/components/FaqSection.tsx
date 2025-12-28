@@ -2,28 +2,28 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 const faqs: { q: string; a: string }[] = [
   {
-    q: "What is Coro?",
-    a: "Coro is an AI developer memory for your terminal. It indexes successful commands, context, and docs so anyone on your team can find and safely re‑run what already worked.",
+    q: "What is Held?",
+    a: "Held is an AI developer memory for your terminal. It indexes successful commands, context, and docs so anyone on your team can find and safely re‑run what already worked.",
   },
   {
-    q: "How does Coro capture context?",
+    q: "How does Held capture context?",
     a: "A lightweight local agent records structured terminal state — command, working directory, environment variables, repo/branch, and relevant output — then links it to issues and docs. Sensitive data stays local unless you choose to share with your team.",
   },
   {
     q: "Is my data private?",
-    a: "Yes. Coro is local‑first with selective sync. You control what’s shared with your workspace. We attach provenance to every result so reuse is auditable and trusted.",
+    a: "Yes. Held is local‑first with selective sync. You control what's shared with your workspace. We attach provenance to every result so reuse is auditable and trusted.",
   },
   {
-    q: "What problems does Coro solve day‑to‑day?",
+    q: "What problems does Held solve day‑to‑day?",
     a: "Onboarding, incident response, CI repro, and machine migrations. Instead of hunting Slack and READMEs, you get the exact command and flags that previously worked for a similar environment.",
   },
   {
     q: "Which platforms are supported?",
-    a: "macOS and Linux terminals at launch. Coro works with common shells and is editor‑agnostic.",
+    a: "macOS and Linux terminals at launch. Held works with common shells and is editor‑agnostic.",
   },
   {
-    q: "How is Coro different from shell history or code search?",
-    a: "Shell history is personal and lossy, code search ignores runtime state. Coro is state‑aware and team‑shareable, ranking results by environment similarity and last known success.",
+    q: "How is Held different from shell history or code search?",
+    a: "Shell history is personal and lossy, code search ignores runtime state. Held is state‑aware and team‑shareable, ranking results by environment similarity and last known success.",
   },
   {
     q: "What’s on the roadmap?",

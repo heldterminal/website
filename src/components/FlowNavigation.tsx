@@ -58,7 +58,7 @@ export const FlowNavigation = () => {
           <div className="flex items-center space-x-8">
             <Link to="/" className="flex items-center space-x-2">
               <Terminal className="h-8 w-8 text-primary" />
-              <span className="text-xl font-bold text-foreground">Coro</span>
+              <span className="text-xl font-bold text-foreground">Held</span>
             </Link>
 
             {/* Desktop Nav (Pricing, Our Team) */}

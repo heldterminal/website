@@ -2,7 +2,6 @@ import { ScrollSection } from "@/components/ScrollSection";
 import { Card, CardContent } from "@/components/ui/card";
 import { Linkedin } from "lucide-react";
 import { FlowNavigation } from "@/components/FlowNavigation";
-import TeamMissionFlow from "@/components/TeamMissionFlow";
 
 const Team = () => {
   const team = [
@@ -62,7 +61,7 @@ const Team = () => {
                 className="text-lg leading-relaxed text-pretty max-w-3xl mx-auto mb-16"
                 style={{ color: "hsl(var(--muted-foreground))", lineHeight: 1.6, fontWeight: 300 }}
               >
-We’re UC Berkeley grads reimagining the terminal for the modern team. Coro is an AI copilot that makes command history and workflows collaborative, automated, and intelligent.              </p>
+We're UC Berkeley grads reimagining the terminal for the modern team. Held is an AI copilot that makes command history and workflows collaborative, automated, and intelligent.              </p>
             </ScrollSection>
             
             <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto items-stretch">
@@ -109,8 +108,6 @@ We’re UC Berkeley grads reimagining the terminal for the modern team. Coro is 
             </div>
           </div>
         </ScrollSection>
-
-        {/* <TeamMissionFlow /> */}
       </main>
     </div>
   );

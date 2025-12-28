@@ -69,7 +69,7 @@ export const HeroSection = () => {
                 className="text-lg leading-relaxed text-pretty max-w-2xl mt-6 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-600"
                 style={{ color: "hsl(var(--muted-foreground))", lineHeight: 1.6, fontWeight: 300 }}
               >
-                Every workflow remembered, every teammate aligned — Coro transforms scattered knowledge into a shared
+                Every workflow remembered, every teammate aligned — Held transforms scattered knowledge into a shared
                 copilot.
               </p>
               </div>

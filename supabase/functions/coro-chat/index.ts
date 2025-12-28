@@ -1,4 +1,4 @@
-// supabase/functions/coro-chat/index.ts
+// supabase/functions/held-chat/index.ts
 /// <reference lib="deno.unstable" />
 import { serve } from "std/http/server.ts";
 import { createClient } from "supabase";
@@ -10,8 +10,8 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY");
 
 // Chat memory table name
-const CHAT_TABLE = Deno.env.get("CORO_CHAT_TABLE") || "coro_chat_memory";
-const CHAT_MAX_TURNS = Number(Deno.env.get("CORO_CHAT_MAX_TURNS") || "20");
+const CHAT_TABLE = Deno.env.get("HELD_CHAT_TABLE") || "held_chat_memory";
+const CHAT_MAX_TURNS = Number(Deno.env.get("HELD_CHAT_MAX_TURNS") || "20");
 
 serve(async (req) => {
   // CORS (optional: restrict to your app domain)
@@ -93,11 +93,11 @@ serve(async (req) => {
     const mode = String(body?.mode || "ai");
     const model = String(body?.model || "");
     const sessionId = String(body?.session_id || "").trim() ||
-      autoSessionId(req.headers.get("coro-tty") || "");
+      autoSessionId(req.headers.get("held-tty") || "");
     const chatSession = String(body?.chat_session || `${sessionId}-ai`);
     const maxTokens = Number(body?.max_tokens || 256);
     const temperature = Number(body?.temperature || 0.2);
-    const overridePrompt = (Deno.env.get("CORO_SYSTEM_PROMPT") || "").trim() || undefined;
+    const overridePrompt = (Deno.env.get("HELD_SYSTEM_PROMPT") || "").trim() || undefined;
 
     // ----- Fetch candidate history rows (with RLS via user token) -----
     const limitRecent = Math.min(Number(body?.limit_recent || 80), 200);
@@ -169,7 +169,7 @@ serve(async (req) => {
       OPENAI_API_KEY: Deno.env.get("OPENAI_API_KEY"),
       OPENROUTER_API_KEY: Deno.env.get("OPENROUTER_API_KEY"),
       LLAMA_API_KEY: Deno.env.get("LLAMA_API_KEY"),
-      CORO_APP_URL: Deno.env.get("CORO_APP_URL") || ""
+      HELD_APP_URL: Deno.env.get("HELD_APP_URL") || ""
     };
 
     const { ok, content } = await callModel(messages, model, env, {

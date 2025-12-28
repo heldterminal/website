@@ -7,7 +7,7 @@ const ANON_KEY      = Deno.env.get("SUPABASE_ANON_KEY")!;
 const SERVICE_ROLE  = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const SITE_URL      = Deno.env.get("SITE_URL")!; // e.g., https://app.example.com
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
-const RESEND_FROM = Deno.env.get("RESEND_FROM") || "Coro Team Invites <onboarding@resend.dev>";
+const RESEND_FROM = Deno.env.get("RESEND_FROM") || "Held Team Invites <onboarding@resend.dev>";
 
 const admin = createClient(SUPABASE_URL, SERVICE_ROLE);
 const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
@@ -197,7 +197,7 @@ serve(async (req) => {
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 640px; margin: 0 auto;">
               <h2>You’re invited to join <strong>${team_name}</strong></h2>
-              <p>${inviter_name} has invited you to collaborate in Coro.</p>
+              <p>${inviter_name} has invited you to collaborate in Held.</p>
               <p>
                 <a href="${redirectTo}" style="display:inline-block;padding:10px 16px;background:#3b82f6;color:#fff;border-radius:6px;text-decoration:none">
                   Accept invite

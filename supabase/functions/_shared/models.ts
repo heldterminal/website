@@ -57,7 +57,7 @@ async function openrouter(messages, model, env, opts = {}) {
   };
 
   // (Recommended by OpenRouter; helps with routing/allow-list but not required)
-  if (env.CORO_APP_URL) headers["HTTP-Referer"] = env.CORO_APP_URL;
+  if (env.HELD_APP_URL) headers["HTTP-Referer"] = env.HELD_APP_URL;
 
   const body = {
     model,

@@ -11,8 +11,8 @@ interface TerminalDemoProps {
 
 export function TerminalDemo({ theme = "dark", accentColor = "#3b82f6" }: TerminalDemoProps) {
   const steps = [
-    { command: "coro init", success: "✓ Coro initialized successfully" },
-    { command: "coro connect team", success: "✓ Connected to team workspace" },
+    { command: "held init", success: "✓ Held initialized successfully" },
+    { command: "held connect team", success: "✓ Connected to team workspace" },
   ]
 
   const [currentScenario, setCurrentScenario] = useState(0)
@@ -87,7 +87,7 @@ export function TerminalDemo({ theme = "dark", accentColor = "#3b82f6" }: Termin
             <div className="w-3 h-3 rounded-full bg-green-500 hover:scale-110 transition-transform duration-300"></div>
           </div>
           <div className="text-xs font-mono ml-4" style={{ color: "hsl(var(--foreground))" }}>
-            terminal — coro
+            terminal — held
           </div>
         </div>
 
@@ -115,11 +115,11 @@ export function TerminalDemo({ theme = "dark", accentColor = "#3b82f6" }: Termin
         </div>
       </div>
 
-      {/* Coro Search Sidebar */}
+      {/* Held Search Sidebar */}
       <div className="w-80 rounded-lg overflow-hidden shadow-2xl glass-card hover:scale-[1.02] transition-transform duration-500">
         <div className="px-4 py-3 border-b" style={{ backgroundColor: "hsl(hsl(var(--muted-foreground)))", borderColor: "hsl(var(--border))" }}>
           <div className="text-sm font-medium" style={{ color: "hsl(var(--foreground))" }}>
-            Coro
+            Held
           </div>
         </div>
 
@@ -185,7 +185,7 @@ export function TerminalDemo({ theme = "dark", accentColor = "#3b82f6" }: Termin
         <div className="p-3 border-t" style={{ borderColor: "hsl(var(--border))" }}>
           <div className="flex items-center space-x-2">
             <Input
-              placeholder="Ask Coro..."
+              placeholder="Ask Held..."
               value={currentInput}
               onChange={(e) => setCurrentInput(e.target.value)}
               className="flex-1"

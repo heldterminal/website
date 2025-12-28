@@ -108,7 +108,7 @@ const TeamCreate = () => {
                   <Label htmlFor="teamName">Team name</Label>
                   <Input
                     id="teamName"
-                    placeholder="e.g., Coro Platform Team"
+                    placeholder="e.g., Held Platform Team"
                     value={teamName}
                     onChange={(e) => setTeamName(e.target.value)}
                     required
@@ -118,7 +118,7 @@ const TeamCreate = () => {
                   <Label htmlFor="company">Company (optional)</Label>
                   <Input
                     id="company"
-                    placeholder="e.g., Coro, Inc."
+                    placeholder="e.g., Held, Inc."
                     value={company}
                     onChange={(e) => setCompany(e.target.value)}
                   />

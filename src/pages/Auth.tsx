@@ -196,7 +196,7 @@ const Auth = () => {
     const width = 600, height = 700;
     const left = window.screenX + (window.outerWidth - width) / 2;
     const top = window.screenY + (window.outerHeight - height) / 2;
-    const popup = window.open(url, "coro-oauth",
+    const popup = window.open(url, "held-oauth",
       `width=${width},height=${height},left=${left},top=${top},resizable,scrollbars`);
     if (!popup) return;
     const check = setInterval(async () => {
@@ -269,11 +269,11 @@ const Auth = () => {
       <div className="w-full max-w-md">
                   <div className="flex items-center justify-center mb-8">
             <Terminal className="h-8 w-8 mr-2 text-primary" />
-            <h1 className="text-2xl font-bold text-foreground">Coro</h1>
+            <h1 className="text-2xl font-bold text-foreground">Held</h1>
           </div>
         <Card className="glass-panel">
           <CardHeader className="text-center">
-            <CardTitle className="text-foreground">Welcome to Coro</CardTitle>
+            <CardTitle className="text-foreground">Welcome to Held</CardTitle>
             <CardDescription className="text-muted-foreground">
               AI-powered terminal for command recall and team knowledge
             </CardDescription>

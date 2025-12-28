@@ -27,7 +27,7 @@ const handler = async (req: Request): Promise<Response> => {
     const { name, email, phone, message, to }: ContactEmailRequest = await req.json();
 
     const emailResponse = await resend.emails.send({
-      from: "Coro Contact Form <onboarding@resend.dev>",
+      from: "Held Contact Form <onboarding@resend.dev>",
       to: [to],
       subject: `New Contact Form Submission from ${name}`,
       html: `
@@ -51,7 +51,7 @@ const handler = async (req: Request): Promise<Response> => {
           <hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;">
           
           <p style="color: #666; font-size: 14px;">
-            This message was sent from the Coro website contact form.
+            This message was sent from the Held website contact form.
           </p>
         </div>
       `,

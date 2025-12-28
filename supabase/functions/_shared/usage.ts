@@ -18,7 +18,7 @@
 //
 // The trigger will automatically update team_usage_daily.storage_bytes!
 //
-// USAGE EXAMPLE FOR API CALLS (like coro-chat):
+// USAGE EXAMPLE FOR API CALLS (like held-chat):
 // ----------------------------------------------
 //   const defaultTeamId = await getDefaultTeamId(supabase, userId);
 //   if (defaultTeamId) {
