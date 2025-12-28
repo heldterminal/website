@@ -2,42 +2,18 @@ import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ProfileMenu } from "@/components/ui/ProfileMenu";
 
 export const FlowNavigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, profile } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const navItems = [
     { id: "pricing", label: "Pricing", href: "/pricing" },
-    { id: "team", label: "Our Team", href: "/team" },
-    { id: "contact", label: "Contact", href: "/#contact-section" },
     { id: "waitlist", label: "Waitlist", href: "/waitlist" },
   ];
-
-  const handleContactClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (location.pathname !== '/') {
-      navigate('/');
-      // Wait for navigation to complete, then scroll
-      setTimeout(() => {
-        const element = document.getElementById('contact-section');
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100);
-    } else {
-      const element = document.getElementById('contact-section');
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-    setIsMobileMenuOpen(false);
-  };
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -61,26 +37,16 @@ export const FlowNavigation = () => {
               <span className="text-2xl font-semibold text-foreground">Held</span>
             </Link>
 
-            {/* Desktop Nav (Pricing, Our Team) */}
+            {/* Desktop Nav */}
             <div className="hidden md:flex items-center space-x-6">
               {navItems.map((item) => (
-                item.id === 'contact' ? (
-                  <button
-                    key={item.id}
-                    onClick={handleContactClick}
-                    className="text-sm font-medium transition-colors hover:text-primary text-foreground/80"
-                  >
-                    {item.label}
-                  </button>
-                ) : (
-                  <Link
-                    key={item.id}
-                    to={item.href}
-                    className="text-sm font-medium transition-colors hover:text-primary text-foreground/80"
-                  >
-                    {item.label}
-                  </Link>
-                )
+                <Link
+                  key={item.id}
+                  to={item.href}
+                  className="text-sm font-medium transition-colors hover:text-primary text-foreground/80"
+                >
+                  {item.label}
+                </Link>
               ))}
             </div>
           </div>
@@ -119,24 +85,14 @@ export const FlowNavigation = () => {
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 bg-card/95 backdrop-blur-md border-t border-border">
               {navItems.map((item) => (
-                item.id === 'contact' ? (
-                  <button
-                    key={item.id}
-                    onClick={handleContactClick}
-                    className="block w-full text-left px-3 py-2 text-base font-medium transition-colors hover:text-primary text-foreground/80"
-                  >
-                    {item.label}
-                  </button>
-                ) : (
-                  <Link
-                    key={item.id}
-                    to={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-3 py-2 text-base font-medium transition-colors hover:text-primary text-foreground/80"
-                  >
-                    {item.label}
-                  </Link>
-                )
+                <Link
+                  key={item.id}
+                  to={item.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-3 py-2 text-base font-medium transition-colors hover:text-primary text-foreground/80"
+                >
+                  {item.label}
+                </Link>
               ))}
 
               {/* Mobile Auth */}

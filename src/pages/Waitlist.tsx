@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { FlowNavigation } from "@/components/FlowNavigation";
-import TerminalBackground from "@/components/TerminalBackground";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -55,7 +54,6 @@ const Waitlist = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: "hsl(var(--background))" }}>
-      <TerminalBackground />
       <FlowNavigation />
 
       <main className="relative z-10">

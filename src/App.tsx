@@ -9,7 +9,6 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Pricing from "./pages/Pricing";
-import Team from "./pages/Team";
 import Contact from "./pages/Contact";
 import Settings from "./pages/Settings";
 import PaymentSuccess from "./pages/PaymentSuccess";
@@ -29,12 +28,13 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
+        <Analytics />
+        <SpeedInsights />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/pricing" element={<Pricing />} />
-            <Route path="/team" element={<Team />} />
             <Route path="/team-management" element={<TeamManagement />} />
             <Route path="/team-management/create" element={<TeamCreate />} />
             <Route path="/team-management/:teamId" element={<TeamDetails />} />

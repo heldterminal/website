@@ -2,55 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Cognito-Flux Design System - Glass & Water Theme */
+/* Held Design System - Monochrome with Warm Accent */
 
 @layer base {
   :root {
-    /* Base colors - Sophisticated slate foundation */
-    --background: 220 13% 6%;
-    --foreground: 210 85% 95%;
+    /* Base colors - Pure black and white */
+    --background: 0 0% 0%;
+    --foreground: 0 0% 98%;
 
-    /* Glass morphism cards */
-    --card: 220 15% 8%;
-    --card-foreground: 210 80% 92%;
+    /* Cards - Dark gray */
+    --card: 0 0% 6%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 220 18% 10%;
-    --popover-foreground: 210 80% 92%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 95%;
 
-    /* Light electric blue primary */
-    --primary: 210 85% 65%;
-    --primary-foreground: 220 20% 5%;
-    --primary-glow: 210 90% 75%;
+    /* Primary - Muted olive accent */
+    --primary: 50 12% 32%;
+    --primary-foreground: 0 0% 95%;
+    --primary-glow: 50 15% 40%;
 
-    /* Secondary glass tones */
-    --secondary: 220 15% 12%;
-    --secondary-foreground: 210 70% 85%;
+    /* Secondary - Neutral grays */
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 85%;
 
-    --muted: 220 12% 15%;
-    --muted-foreground: 210 25% 65%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 60%;
 
-    /* Accent blue */
-    --accent: 200 80% 60%;
-    --accent-foreground: 220 20% 5%;
+    /* Accent - Same muted olive */
+    --accent: 50 12% 32%;
+    --accent-foreground: 0 0% 95%;
 
-    --destructive: 0 75% 55%;
-    --destructive-foreground: 210 85% 95%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 220 15% 18%;
-    --input: 220 15% 12%;
-    --ring: 210 85% 65%;
+    --border: 0 0% 18%;
+    --input: 0 0% 12%;
+    --ring: 50 12% 32%;
 
     --radius: 1rem;
 
-    /* Glass morphism variables */
-    --glass-bg: 220 15% 8% / 0.6;
-    --glass-border: 210 50% 70% / 0.2;
-    --glass-shadow: 0 20px 40px -12px hsl(220 50% 0% / 0.5);
+    /* Glass morphism variables - grayscale */
+    --glass-bg: 0 0% 6% / 0.8;
+    --glass-border: 0 0% 100% / 0.1;
+    --glass-shadow: 0 20px 40px -12px hsl(0 0% 0% / 0.6);
     
-    /* Light electric blue gradients */
-    --gradient-flow: linear-gradient(135deg, hsl(210 85% 65% / 0.3), hsl(200 80% 60% / 0.2), hsl(190 75% 65% / 0.15));
-    --gradient-depth: linear-gradient(180deg, hsl(220 13% 6%), hsl(220 18% 10%));
-    --gradient-surface: linear-gradient(145deg, hsl(210 85% 65% / 0.2), transparent, hsl(200 80% 60% / 0.12));
+    /* Monochrome gradients with subtle warmth */
+    --gradient-flow: linear-gradient(135deg, hsl(0 0% 15% / 0.5), hsl(0 0% 10% / 0.3), hsl(0 0% 5% / 0.2));
+    --gradient-depth: linear-gradient(180deg, hsl(0 0% 0%), hsl(0 0% 6%));
+    --gradient-surface: linear-gradient(145deg, hsl(0 0% 20% / 0.1), transparent, hsl(0 0% 15% / 0.05));
     
     /* Animation variables */
     --scroll-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -61,21 +61,14 @@
     --blur-medium: blur(16px);
     --blur-heavy: blur(24px);
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 0 0% 4%;
+    --sidebar-foreground: 0 0% 90%;
+    --sidebar-primary: 0 0% 98%;
+    --sidebar-primary-foreground: 0 0% 5%;
+    --sidebar-accent: 0 0% 15%;
+    --sidebar-accent-foreground: 0 0% 90%;
+    --sidebar-border: 0 0% 18%;
+    --sidebar-ring: 50 12% 32%;
   }
 
 }
@@ -90,9 +83,8 @@
   }
   
   .glass-nav {
-    @apply fixed top-0 left-0 right-0 z-50 backdrop-blur-md;
-    background: hsl(var(--glass-bg));
-    border-bottom: 1px solid hsl(var(--glass-border));
+    @apply fixed top-0 left-0 right-0 z-50;
+    background: hsl(var(--background));
   }
   
   .flow-gradient {
