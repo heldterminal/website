@@ -53,15 +53,7 @@ export const FlowNavigation = () => {
 
           {/* Right: Auth/Profile */}
           <div className="hidden md:flex items-center space-x-4">
-            {user ? (
-              <ProfileMenu profile={profile} />
-            ) : (
-              <Link to="/waitlist">
-                <Button variant="outline" size="sm">
-                  Sign In
-                </Button>
-              </Link>
-            )}
+            {user && <ProfileMenu profile={profile} />}
           </div>
 
           {/* Mobile menu button */}
@@ -96,19 +88,11 @@ export const FlowNavigation = () => {
               ))}
 
               {/* Mobile Auth */}
-              <div className="pt-4 border-t border-border">
-                {user ? (
+              {user && (
+                <div className="pt-4 border-t border-border">
                   <ProfileMenu profile={profile} />
-                ) : (
-                  <Link
-                    to="/waitlist"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-3 py-2 text-base font-medium text-foreground/80"
-                  >
-                    Sign In
-                  </Link>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
         )}
