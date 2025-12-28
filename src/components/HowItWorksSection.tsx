@@ -119,8 +119,6 @@ export const HowItWorksSection = () => {
                   style={{ 
                     backgroundColor: isActive ? "hsl(0 0% 10%)" : "hsl(0 0% 6%)",
                     border: isActive ? "1px solid hsl(0 0% 20%)" : "1px solid hsl(0 0% 12%)",
-                    transform: isActive ? "translateY(-8px)" : "translateY(0)",
-                    boxShadow: isActive ? "0 20px 40px -20px rgba(0,0,0,0.8)" : "none"
                   }}
                 >
                   {/* Icon with number badge */}
@@ -182,8 +180,7 @@ export const HowItWorksSection = () => {
                     style={{ 
                       backgroundColor: "hsl(0 0% 5%)",
                       border: "1px solid hsl(0 0% 15%)",
-                      height: isActive ? "auto" : "60px",
-                      opacity: 1
+                      minHeight: "72px",
                     }}
                   >
                     {step.number === 1 && (
