@@ -56,7 +56,7 @@ export const FlowNavigation = () => {
             {user ? (
               <ProfileMenu profile={profile} />
             ) : (
-              <Link to="/auth">
+              <Link to="/waitlist">
                 <Button variant="outline" size="sm">
                   Sign In
                 </Button>
@@ -101,7 +101,7 @@ export const FlowNavigation = () => {
                   <ProfileMenu profile={profile} />
                 ) : (
                   <Link
-                    to="/auth"
+                    to="/waitlist"
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="block px-3 py-2 text-base font-medium text-foreground/80"
                   >

@@ -6,13 +6,8 @@ const Pricing = () => {
   const navigate = useNavigate();
   
   const handlePlanAction = (cta: string) => {
-    if (cta === "Contact Sales") {
-      navigate("/waitlist");
-    } else if (cta === "Start Trial") {
-      navigate("/auth");
-    } else if (cta === "Get Started") {
-      navigate("/auth");
-    }
+    // All actions redirect to waitlist for now (auth disabled for prod)
+    navigate("/waitlist");
   };
 
   const plans = [
