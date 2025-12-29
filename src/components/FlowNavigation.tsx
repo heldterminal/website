@@ -1,14 +1,11 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useAuth } from "@/hooks/useAuth";
 import { Link } from "react-router-dom";
-import { ProfileMenu } from "@/components/ui/ProfileMenu";
+import { Button } from "@/components/ui/button";
 
 export const FlowNavigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { user, profile } = useAuth();
 
   const navItems = [
     { id: "pricing", label: "Pricing", href: "/pricing" },
@@ -51,17 +48,8 @@ export const FlowNavigation = () => {
             </div>
           </div>
 
-          {/* Right: Auth/Profile */}
+          {/* Right: Empty for now */}
           <div className="hidden md:flex items-center space-x-4">
-            {user ? (
-              <ProfileMenu profile={profile} />
-            ) : (
-              <Link to="/auth">
-                <Button variant="outline" size="sm">
-                  Sign In
-                </Button>
-              </Link>
-            )}
           </div>
 
           {/* Mobile menu button */}
@@ -95,20 +83,6 @@ export const FlowNavigation = () => {
                 </Link>
               ))}
 
-              {/* Mobile Auth */}
-              <div className="pt-4 border-t border-border">
-                {user ? (
-                  <ProfileMenu profile={profile} />
-                ) : (
-                  <Link
-                    to="/auth"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-3 py-2 text-base font-medium text-foreground/80"
-                  >
-                    Sign In
-                  </Link>
-                )}
-              </div>
             </div>
           </div>
         )}
