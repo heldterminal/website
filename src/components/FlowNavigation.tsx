@@ -2,35 +2,10 @@ import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/hooks/useAuth";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 export const FlowNavigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { user, signOut } = useAuth();
-
-  // Get user initials
-  const getUserInitials = () => {
-    if (!user) return '';
-    const email = user.email || '';
-    const name = user.user_metadata?.full_name || user.user_metadata?.name || '';
-    
-    if (name) {
-      const parts = name.split(' ');
-      if (parts.length >= 2) {
-        return (parts[0][0] + parts[1][0]).toUpperCase();
-      }
-      return name[0].toUpperCase();
-    }
-    
-    return email[0].toUpperCase();
-  };
 
   const navItems = [
     { id: "pricing", label: "Pricing", href: "/pricing" },
@@ -73,35 +48,13 @@ export const FlowNavigation = () => {
             </div>
           </div>
 
-          {/* Right: User or Sign In */}
+          {/* Right: Sign In */}
           <div className="hidden md:flex items-center space-x-4">
-            {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="h-8 w-8 rounded-full p-0">
-                    <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
-                      <span className="text-xs font-medium text-primary-foreground">
-                        {getUserInitials()}
-                      </span>
-                    </div>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem disabled>
-                    <span className="text-sm">{user.email}</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={signOut}>
-                    Sign Out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Link to="/auth">
-                <Button variant="outline" size="sm">
-                  Sign In
-                </Button>
-              </Link>
-            )}
+            <Link to="/auth">
+              <Button variant="outline" size="sm">
+                Sign In
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -135,37 +88,15 @@ export const FlowNavigation = () => {
                 </Link>
               ))}
 
-              {/* Mobile User or Sign In */}
+              {/* Mobile Sign In */}
               <div className="pt-4 border-t border-border">
-                {user ? (
-                  <div className="px-3 py-2">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
-                        <span className="text-xs font-medium text-primary-foreground">
-                          {getUserInitials()}
-                        </span>
-                      </div>
-                      <span className="text-sm text-foreground/80">{user.email}</span>
-                    </div>
-                    <button
-                      onClick={() => {
-                        signOut();
-                        setIsMobileMenuOpen(false);
-                      }}
-                      className="text-sm text-foreground/60 hover:text-foreground/80"
-                    >
-                      Sign Out
-                    </button>
-                  </div>
-                ) : (
-                  <Link
-                    to="/auth"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-3 py-2 text-base font-medium text-foreground/80"
-                  >
-                    Sign In
-                  </Link>
-                )}
+                <Link
+                  to="/auth"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-3 py-2 text-base font-medium text-foreground/80"
+                >
+                  Sign In
+                </Link>
               </div>
             </div>
           </div>
